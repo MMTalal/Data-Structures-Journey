@@ -24,7 +24,8 @@ data-structures-journey/
 │   ├── Increment_pointer.cpp
 │   ├── Swap_using_pointers.cpp
 │   ├── Pointer_swap_Function.cpp
-│   └── Pointer_swap_Function_ByReference.cpp
+│   ├── Pointer_swap_Function_ByReference.cpp
+│   └── Add_ten_function.cpp
 │
 ├── 02-arrays/           🔜 Coming soon
 ├── 03-linked-lists/     🔜 Coming soon
@@ -86,6 +87,7 @@ arr = nullptr;
 | `Swap_using_pointers.cpp` | Swapping two variable values using pointers directly in main |
 | `Pointer_swap_Function.cpp` | Swap function using pointers (Pass by Address) |
 | `Pointer_swap_Function_ByReference.cpp` | Swap function using references (Pass by Reference) |
+| `Add_ten_function.cpp` | function that takes an integer and adds 10 to it |
 
 ---
 
