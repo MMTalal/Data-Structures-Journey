@@ -25,7 +25,9 @@ data-structures-journey/
 │   ├── Swap_using_pointers.cpp
 │   ├── Pointer_swap_Function.cpp
 │   ├── Pointer_swap_Function_ByReference.cpp
-│   └── Add_ten_function.cpp
+│   ├── Add_ten_function.cpp
+│   ├── Dynamic_array_input.cpp
+│   └── Dynamic_array_input_sum.cpp
 │
 ├── 02-arrays/           🔜 Coming soon
 ├── 03-linked-lists/     🔜 Coming soon
@@ -88,6 +90,8 @@ arr = nullptr;
 | `Pointer_swap_Function.cpp` | Swap function using pointers (Pass by Address) |
 | `Pointer_swap_Function_ByReference.cpp` | Swap function using references (Pass by Reference) |
 | `Add_ten_function.cpp` | function that takes an integer and adds 10 to it |
+| `Dynamic_array_input.cpp` | Creates a dynamic array of 3 integers on the heap from user and print it |
+| `Dynamic_array_input_sum.cpp` | Creates a dynamic array of (N) integers on the heap from user, print it, and calculates the sum |
 
 ---
 
