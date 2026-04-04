@@ -30,7 +30,8 @@ data-structures-journey/
 │   └── Dynamic_array_input_sum.cpp
 │
 ├── 02-arrays/
-│   └── Array_reverse_output.cpp
+│   ├── Array_reverse_output.cpp
+│   └── Array_sum_with_dynamic_size_and_length.cpp
 │
 ├── 03-linked-lists/     🔜 Coming soon
 ├── 04-stacks-queues/    🔜 Coming soon
@@ -44,7 +45,7 @@ data-structures-journey/
 | Topic | Status | Files |
 |-------|--------|-------|
 | Pointers & Dynamic Memory | ✅ Done | 10 files |
-| Arrays | 🔥 In Progress | 1 file |
+| Arrays | 🔥 In Progress | 2 file |
 | Linked Lists | ⏳ Planned | — |
 | Stacks & Queues | ⏳ Planned | — |
 | Trees & Graphs | ⏳ Planned | — |
@@ -129,6 +130,8 @@ for (int i = 4; i >= 0; i--) {
 | File | What it does |
 |------|-------------|
 | `Array_reverse_output.cpp` | Takes 5 integers from user and prints them in reverse order |
+| `Array_sum_with_dynamic_size_and_length.cpp` | Creates a dynamic array with user-defined size, asks user how many elements to fill (length), validates that length does not exceed size, fills the array with user input, prints all entered elements, and calculates their sum |
+
 
 ---
 
