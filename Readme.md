@@ -32,7 +32,8 @@ data-structures-journey/
 ├── 02-arrays/
 │   ├── Array_reverse_output.cpp
 │   ├── Array_sum_with_dynamic_size_and_length.cpp
-│   └── Smallest_element.cpp
+│   ├── Smallest_element.cpp
+│   └── Array_search.cpp
 │
 ├── 03-linked-lists/     🔜 Coming soon
 ├── 04-stacks-queues/    🔜 Coming soon
@@ -46,7 +47,7 @@ data-structures-journey/
 | Topic | Status | Files |
 |-------|--------|-------|
 | Pointers & Dynamic Memory | ✅ Done | 10 files |
-| Arrays | 🔥 In Progress | 3 file |
+| Arrays | 🔥 In Progress | 4 file |
 | Linked Lists | ⏳ Planned | — |
 | Stacks & Queues | ⏳ Planned | — |
 | Trees & Graphs | ⏳ Planned | — |
@@ -133,6 +134,7 @@ for (int i = 4; i >= 0; i--) {
 | `Array_reverse_output.cpp` | Takes 5 integers from user and prints them in reverse order |
 | `Array_sum_with_dynamic_size_and_length.cpp` | Creates a dynamic array with user-defined size, asks user how many elements to fill (length), validates that length does not exceed size, fills the array with user input, prints all entered elements, and calculates their sum |
 | `Smallest_element.cpp` | Takes (N) integers from user and Finds the smallest (minimum) value in the array |
+| `Array_search.cpp` | Creates a dynamic array with user-defined size, validates size and length, fills the array with user input, searches for a user-defined target using Linear Search with foundIndex pattern, prints the index if "found" or "not found" if not |
 
 ---
 
