@@ -35,7 +35,8 @@ data-structures-journey/
 │   ├── Smallest_element.cpp
 │   ├── Array_search.cpp
 │   ├── Count_even_numbers.cpp
-│   └── Two_pointer_reverse_in-place.cpp
+│   ├── Two_pointer_reverse_in-place.cpp
+│   └── Array_cleanup_sorted.cpp
 │
 ├── 03-linked-lists/     🔜 Coming soon
 ├── 04-stacks-queues/    🔜 Coming soon
@@ -49,7 +50,7 @@ data-structures-journey/
 | Topic | Status | Files |
 |-------|--------|-------|
 | Pointers & Dynamic Memory | ✅ Done | 10 files |
-| Arrays | 🔥 In Progress | 6 file |
+| Arrays | 🔥 In Progress | 7 files |
 | Linked Lists | ⏳ Planned | — |
 | Stacks & Queues | ⏳ Planned | — |
 | Trees & Graphs | ⏳ Planned | — |
@@ -140,6 +141,8 @@ for (int i = 4; i >= 0; i--) {
 | `Array_search.cpp` | Creates a dynamic array with user-defined size, validates size and length, fills the array with user input, searches for a user-defined target using Linear Search with foundIndex pattern, prints the index if "found" or "not found" if not |
 | `Count_even_numbers.cpp` | Takes (N) integers from user and Finds the count of even numbers |
 | `Two_pointers_reverse_in-place.cpp` | Reverse dynamic array of (N) integers in-place using two pointers on the heap |
+| `Array_cleanup_sorted.cpp` | takes (N) integers from user and cleanup duplicates (This logic requires array to be sorted) |
+
 
 ---
 
