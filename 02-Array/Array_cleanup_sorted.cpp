@@ -39,6 +39,15 @@ int main () {
     {
         cout << "What is value for the element No. " << i + 1 << " ?" << endl;
         cin >> ptr[i];
+
+        if(i > 0 && ptr[i] < ptr[i-1])
+        {
+            cout << "Error: Please enter values in sorted order!" << endl;
+            delete[] ptr;
+            ptr = nullptr;
+            return 1;
+        }
+
     }
 
     // Print array after removing duplicates
@@ -48,8 +57,8 @@ int main () {
     // Note: This method only works if array is sorted
     for(int i = 0; i < length; i++)
     {
-        // Print element if it's zero OR different from previous element
-        if(ptr[i] == 0 || ptr[i] != ptr[i-1])
+        // Print element index zero OR different from previous element
+        if(i == 0 || ptr[i] != ptr[i-1])
         {
             cout << ptr[i] << " ";
         }
