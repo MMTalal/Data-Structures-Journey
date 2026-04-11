@@ -36,7 +36,8 @@ data-structures-journey/
 │   ├── Array_search.cpp
 │   ├── Count_even_numbers.cpp
 │   ├── Two_pointer_reverse_in-place.cpp
-│   └── Array_cleanup_sorted.cpp
+│   ├── Array_cleanup_sorted.cpp
+│   └── Array_merge.cpp
 │
 ├── 03-linked-lists/     🔜 Coming soon
 ├── 04-stacks-queues/    🔜 Coming soon
@@ -50,7 +51,7 @@ data-structures-journey/
 | Topic | Status | Files |
 |-------|--------|-------|
 | Pointers & Dynamic Memory | ✅ Done | 10 files |
-| Arrays | 🔥 In Progress | 7 files |
+| Arrays | 🔥 In Progress | 8 files |
 | Linked Lists | ⏳ Planned | — |
 | Stacks & Queues | ⏳ Planned | — |
 | Trees & Graphs | ⏳ Planned | — |
@@ -142,7 +143,7 @@ for (int i = 4; i >= 0; i--) {
 | `Count_even_numbers.cpp` | Takes (N) integers from user and Finds the count of even numbers |
 | `Two_pointers_reverse_in-place.cpp` | Reverse dynamic array of (N) integers in-place using two pointers on the heap |
 | `Array_cleanup_sorted.cpp` | takes (N) integers from user and cleanup duplicates (This logic requires array to be sorted) |
-
+| `Array_merge.cpp` | Merge two sorted arrays with ascending order validation |
 
 ---
 
