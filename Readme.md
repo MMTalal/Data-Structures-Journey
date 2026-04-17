@@ -38,7 +38,8 @@ data-structures-journey/
 │   ├── Two_pointer_reverse_in-place.cpp
 │   ├── Array_cleanup_sorted.cpp
 │   ├── Array_merge.cpp
-│   └── Find_array_range.cpp
+│   ├── Find_array_range.cpp
+│   └── Pair_sum_search.cpp
 │
 ├── 03-linked-lists/     🔜 Coming soon
 ├── 04-stacks-queues/    🔜 Coming soon
@@ -52,7 +53,7 @@ data-structures-journey/
 | Topic | Status | Files |
 |-------|--------|-------|
 | Pointers & Dynamic Memory | ✅ Done | 10 files |
-| Arrays | 🔥 In Progress | 9 files |
+| Arrays | 🔥 In Progress | 10 files |
 | Linked Lists | ⏳ Planned | — |
 | Stacks & Queues | ⏳ Planned | — |
 | Trees & Graphs | ⏳ Planned | — |
@@ -146,6 +147,8 @@ for (int i = 4; i >= 0; i--) {
 | `Array_cleanup_sorted.cpp` | takes (N) integers from user and cleanup duplicates (This logic requires array to be sorted) |
 | `Array_merge.cpp` | Merge two sorted arrays with ascending order validation |
 | `Find_array_range.cpp` | Find Max & Min number and calculates the difference between them |
+| `Pair_sum_search.cpp` | Searches for two different elements that sum to the target |
+
 
 
 ---
