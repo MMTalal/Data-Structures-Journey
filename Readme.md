@@ -40,7 +40,8 @@ data-structures-journey/
 │   ├── Array_merge.cpp
 │   ├── Find_array_range.cpp
 │   ├── Pair_sum_search.cpp
-│   └── Array_Rotation.cpp
+│   ├── Array_Rotation.cpp
+│   └── Kadane's_algorithm.cpp
 │
 ├── 03-linked-lists/     🔜 Coming soon
 ├── 04-stacks-queues/    🔜 Coming soon
@@ -54,7 +55,7 @@ data-structures-journey/
 | Topic | Status | Files |
 |-------|--------|-------|
 | Pointers & Dynamic Memory | ✅ Done | 10 files |
-| Arrays | 🔥 In Progress | 11 files |
+| Arrays | 🔥 In Progress | ✅ Done | 12 files |
 | Linked Lists | ⏳ Planned | — |
 | Stacks & Queues | ⏳ Planned | — |
 | Trees & Graphs | ⏳ Planned | — |
@@ -214,6 +215,8 @@ for (int x : arr) {
 | `Find_array_range.cpp` | Find Max & Min number and calculates the difference between them |
 | `Pair_sum_search.cpp` | Searches for two different elements that sum to the target |
 | `Array_Rotation.cpp` | Creates a dynamic array Using Vector with user-defined size and length, takes a rotation value k from user, validates all inputs, then rotates the array right by k steps using the triple reverse technique (reverse all → reverse first k → reverse remaining), and prints the rotated result |
+| `Kadane's_algorithm.cpp` | Finds the maximum sum of any contiguous subarray using Kadane's Algorithm |
+
 
 
 ---
@@ -250,6 +253,8 @@ arr (pointer to first element)
 | Reassign pointer without `delete` | Memory Leak | `delete` first, then reassign |
 | `i <= size` in loop | Out-of-bounds access | Always use `i < size` |
 | `arr[size]` access | Undefined behavior | Last valid index is `size - 1` |
+| Initialize with `arr[0]` then loop from `i = 0` | Counts `arr[0]` twice | If you initialize a variable with `arr[0]`, always start the loop from `i = 1` |
+
 
 ---
 
