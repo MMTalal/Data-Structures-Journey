@@ -1,1 +1,0 @@
-Print element index zero

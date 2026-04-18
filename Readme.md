@@ -39,7 +39,8 @@ data-structures-journey/
 │   ├── Array_cleanup_sorted.cpp
 │   ├── Array_merge.cpp
 │   ├── Find_array_range.cpp
-│   └── Pair_sum_search.cpp
+│   ├── Pair_sum_search.cpp
+│   └── Array_Rotation.cpp
 │
 ├── 03-linked-lists/     🔜 Coming soon
 ├── 04-stacks-queues/    🔜 Coming soon
@@ -53,7 +54,7 @@ data-structures-journey/
 | Topic | Status | Files |
 |-------|--------|-------|
 | Pointers & Dynamic Memory | ✅ Done | 10 files |
-| Arrays | 🔥 In Progress | 10 files |
+| Arrays | 🔥 In Progress | 11 files |
 | Linked Lists | ⏳ Planned | — |
 | Stacks & Queues | ⏳ Planned | — |
 | Trees & Graphs | ⏳ Planned | — |
@@ -118,6 +119,13 @@ arr = nullptr;
 - Relationship: `arr[i]` == `*(arr + i)`
 - Traversal using **For Loop** (forward and backward)
 - Address calculation: `Base Address + (Index × sizeof(type))`
+- Traversal using **For Loop** — forward (`i = 0` to `size-1`) and backward (`i = size-1` to `0`)
+- **Loop boundaries** — why `i < size` not `i <= size` (avoid Out-of-Bounds)
+- Creating **dynamic arrays** with user-defined size at runtime (`new int[n]`)
+- **Boundary validation** — checking `length > size` before filling
+- **Accumulator pattern** — `sum = sum + arr[i]` inside a loop
+- Always `delete[]` + `nullptr` after dynamic arrays to prevent **Memory Leak**
+
 
 ### Key Rules Learned
 
@@ -133,6 +141,63 @@ for (int i = 4; i >= 0; i--) {
     cout << arr[i];
 }
 ```
+### Vector — The Modern Way
+ 
+`vector` is a dynamic array from the C++ Standard Library that handles memory automatically (no `new` / `delete` needed).
+ 
+```cpp
+#include <vector>  // ← must include this header
+```
+ 
+**Creating a vector:**
+ 
+```cpp
+vector<int> arr(5);          // vector of 5 integers (initialized to 0)
+vector<int> arr(5, 99);      // vector of 5 integers (all = 99)
+vector<int> arr = {1,2,3};   // vector initialized with values
+```
+ 
+**Accessing elements — same as array:**
+ 
+```cpp
+arr[0] = 10;        // write
+cout << arr[0];     // read
+```
+ 
+**Useful vector operations:**
+ 
+```cpp
+arr.size();         // returns number of elements
+arr.push_back(99);  // adds element at the end
+arr.pop_back();     // removes last element
+arr.data();         // returns raw pointer (used when passing to pointer functions)
+```
+ 
+**Looping through a vector:**
+ 
+```cpp
+// Classic loop
+for (int i = 0; i < arr.size(); i++) {
+    cout << arr[i] << " ";
+}
+ 
+// Range-based loop
+for (int x : arr) {
+    cout << x << " ";
+}
+```
+ 
+**Vector vs Raw Pointer:**
+ 
+| | Raw Pointer (`int*`) | Vector |
+|---|---|---|
+| **Memory** | Manual (`new` / `delete`) | Automatic |
+| **Memory Leak risk** | Yes | No |
+| **Flexibility** | Full control | Easier to use |
+| **Use when** | Learning internals / Linked List / Tree | General programs |
+ 
+> **Key insight:** `vector` does the same thing as `new int[n]` internally — but hides the details. Understanding pointers first makes vector easy to understand. 🧠
+
 
 ### Files
 
@@ -148,7 +213,7 @@ for (int i = 4; i >= 0; i--) {
 | `Array_merge.cpp` | Merge two sorted arrays with ascending order validation |
 | `Find_array_range.cpp` | Find Max & Min number and calculates the difference between them |
 | `Pair_sum_search.cpp` | Searches for two different elements that sum to the target |
-
+| `Array_Rotation.cpp` | Creates a dynamic array Using Vector with user-defined size and length, takes a rotation value k from user, validates all inputs, then rotates the array right by k steps using the triple reverse technique (reverse all → reverse first k → reverse remaining), and prints the rotated result |
 
 
 ---
