@@ -46,7 +46,8 @@ data-structures-journey/
 │
 ├── 03-linked-lists/
 │   ├── Traversal.cpp
-│   └── Extract_length_and_maximum_value.cpp
+│   ├── Extract_length_and_maximum_value.cpp
+│   └── Recursive_reverse_print.cpp
 │
 ├── 04-stacks-queues/    🔜 Coming soon
 └── 05-trees-graphs/     🔜 Coming soon
@@ -60,7 +61,7 @@ data-structures-journey/
 |-------|--------|-------|
 | Pointers & Dynamic Memory | ✅ Done | 10 files |
 | Arrays | ✅ Done | 13 files |
-| Linked Lists | 🔥 In Progress | 2 files |
+| Linked Lists | 🔥 In Progress | 3 files |
 | Stacks & Queues | ⏳ Planned | — |
 | Trees & Graphs | ⏳ Planned | — |
 
@@ -382,6 +383,9 @@ return false;
 |------|-------------|
 | `Traversal.cpp` | Creates a linked list of 5 nodes manually, links them, and prints all values via single-pass traversal |
 | `Extract_length_and_maximum_value.cpp` | Prints all values via single-pass traversal that counts nodes and finds the maximum value |
+| `Recursive_reverse_print.cpp` | Take (N) values from user and Print it by reverse via single-pass traversal |
+
+
 
 ---
  
