@@ -44,7 +44,10 @@ data-structures-journey/
 │   ├── Kadane's_algorithm.cpp
 │   └── Vector_operations.cpp
 │
-├── 03-linked-lists/     🔜 Coming soon
+├── 03-linked-lists/
+│   ├── Traversal.cpp
+│   └── Extract_length_and_maximum_value.cpp
+│
 ├── 04-stacks-queues/    🔜 Coming soon
 └── 05-trees-graphs/     🔜 Coming soon
 ```
@@ -56,8 +59,8 @@ data-structures-journey/
 | Topic | Status | Files |
 |-------|--------|-------|
 | Pointers & Dynamic Memory | ✅ Done | 10 files |
-| Arrays | 🔥 In Progress | ✅ Done | 13 files |
-| Linked Lists | ⏳ Planned | — |
+| Arrays | ✅ Done | 13 files |
+| Linked Lists | 🔥 In Progress | 2 files |
 | Stacks & Queues | ⏳ Planned | — |
 | Trees & Graphs | ⏳ Planned | — |
 
@@ -258,13 +261,197 @@ arr (pointer to first element)
 
 ---
 
+## 📌 03 — Linked Lists
+ 
+### Why Linked Lists?
+ 
+Arrays store elements in **contiguous memory** — inserting or deleting at the beginning requires shifting every element. A **Linked List** solves this: each node holds a value and a pointer to the next node, so insertion and deletion at the front cost **O(1)** regardless of size.
+ 
+```
+Array:       [10][20][30][40]   ← contiguous, insert at front = shift all
+Linked List: [10]→[20]→[30]→[40]→NULL  ← insert at front = rewire one pointer
+```
+ 
+### Concepts Covered
+ 
+- **Node** structure: `data` field + `next` pointer (the building block of every Linked List)
+- **Head pointer**: the only entry point to the entire list — lose it and the list is lost
+- **Heap allocation** for nodes (`new Node()`) — nodes live on the Heap, not the Stack
+- **Traversal** using a temporary pointer (`current`) — never move `head` itself
+- **Single pointer rule**: inspect and act on the current node *before* moving to `next`
+- **Edge cases**: empty list, single-node list, operating on the first or last node
+- **Memory cleanup**: `delete` every node after use to prevent Memory Leak
+- **Doubly Linked List**: each node holds both `next` and `prev` pointers — enables bidirectional traversal
+- **Cycle detection** using Floyd's slow/fast pointer algorithm
+### Key Rules Learned
+ 
+```cpp
+// Node definition
+struct Node {
+    int data;
+    Node* next;
+    Node(int val) : data(val), next(nullptr) {}
+};
+ 
+// NEVER move head — always use a temp pointer
+Node* current = head;
+while (current != nullptr) {
+    // act on current node FIRST, then move
+    cout << current->data << " ";
+    current = current->next;
+}
+```
+ 
+```cpp
+// Insert at front — O(1)
+Node* newNode = new Node(val);
+newNode->next = head;
+head = newNode;
+ 
+// Insert at end — O(n)
+Node* current = head;
+while (current->next != nullptr)   // stop at last node, not nullptr
+    current = current->next;
+current->next = new Node(val);
+```
+ 
+```cpp
+// Delete a node safely
+Node* temp = target;
+previousNode->next = target->next;  // bypass the node
+delete temp;                         // free its memory
+temp = nullptr;
+```
+ 
+```cpp
+// Reverse a Linked List — three-pointer technique
+Node* prev    = nullptr;
+Node* current = head;
+Node* next    = nullptr;
+ 
+while (current != nullptr) {
+    next          = current->next;  // save next before overwriting
+    current->next = prev;           // flip the pointer
+    prev          = current;        // advance prev
+    current       = next;           // advance current
+}
+head = prev;  // new head is the old tail
+```
+ 
+```cpp
+// Detect cycle — Floyd's Algorithm
+Node* slow = head;
+Node* fast = head;
+while (fast != nullptr && fast->next != nullptr) {
+    slow = slow->next;
+    fast = fast->next->next;
+    if (slow == fast) return true;  // cycle found
+}
+return false;
+```
+ 
+### Array vs Linked List — When to Use Which
+ 
+| Operation | Array | Linked List |
+|-----------|-------|-------------|
+| Access element by index | **O(1)** ← winner | O(n) |
+| Insert / Delete at **front** | O(n) | **O(1)** ← winner |
+| Insert / Delete at **end** | O(1) with size tracking | O(n) without tail pointer |
+| Insert / Delete in **middle** | O(n) | O(n) — but no shifting |
+| Memory layout | Contiguous | Scattered on Heap |
+| Memory overhead | Low | Extra pointer per node |
+| **Use when** | Random access needed | Frequent front insertions / deletions |
+ 
+> **GIS relevance:** Linked Lists power undo/redo history in GIS tools, event queues in spatial processing pipelines, and adjacency lists in graph-based network analysis.
+ 
+### Common Mistakes to Avoid
+ 
+| Mistake | Problem | Fix |
+|---------|---------|-----|
+| Moving `head` during traversal | List is lost permanently | Always use a `temp` or `current` copy |
+| Forgetting to handle empty list | Crash on `head->data` | Check `if (head == nullptr)` first |
+| Checking `current->next == nullptr` to stop | Skips processing last node | Check `current != nullptr` instead |
+| Using two pointers when one is enough | Unnecessary complexity | Act on node first, then move |
+| Forgetting `delete` on removed nodes | Memory Leak | Always `delete` then set to `nullptr` |
+| Not updating `head` after front deletion | Dangling pointer | `head = head->next` before `delete` |
+| `while (current->next->next != nullptr)` without null check | Crash on 1-node list | Always guard against `nullptr` before chaining |
+ 
+### Files
+ 
+| File | What it does |
+|------|-------------|
+| `Traversal.cpp` | Creates a linked list of 5 nodes manually, links them, and prints all values via single-pass traversal |
+| `Extract_length_and_maximum_value.cpp` | Prints all values via single-pass traversal that counts nodes and finds the maximum value |
+
+---
+ 
+## 🧠 Key Concepts Summary
+ 
+### Memory Layout
+ 
+```
+Stack                    Heap
+|----------|            |----------|
+| int x=5  |            |   [10]   | ← new int(10)
+| int* p --|----------> | address  |
+|----------|            |----------|
+```
+ 
+### Array in Memory
+ 
+```
+arr[0]  arr[1]  arr[2]  arr[3]  arr[4]
+  10      20      30      40      50
+ 1000    1004    1008    1012    1016   ← addresses (int = 4 bytes)
+  ↑
+arr (pointer to first element)
+```
+ 
+### Linked List in Memory
+ 
+```
+head
+ ↓
+[10 | 0x200] ──→ [20 | 0x300] ──→ [30 | nullptr]
+  0x100              0x200              0x300
+  (Stack)            (Heap)             (Heap)
+ 
+Nodes are scattered in Heap — connected only through pointers
+```
+ 
+### Choosing the Right Structure
+ 
+```
+Need fast random access?          → Array / Vector
+Frequent insert/delete at front?  → Linked List
+Undo/Redo history?                → Doubly Linked List
+Queue / Stack implementation?     → Linked List
+Graph adjacency representation?   → Linked List of lists
+```
+ 
+### Common Mistakes to Avoid
+ 
+| Mistake | Problem | Fix |
+|---------|---------|-----|
+| Forget `delete` | Memory Leak | Always `delete` after `new` |
+| Forget `nullptr` after `delete` | Dangling Pointer | Always set `p = nullptr` |
+| Use `delete` instead of `delete[]` for arrays | Undefined behavior | Use `delete[]` for arrays |
+| Reassign pointer without `delete` | Memory Leak | `delete` first, then reassign |
+| `i <= size` in loop | Out-of-bounds access | Always use `i < size` |
+| `arr[size]` access | Undefined behavior | Last valid index is `size - 1` |
+| Initialize with `arr[0]` then loop from `i = 0` | Counts `arr[0]` twice | If you initialize a variable with `arr[0]`, always start the loop from `i = 1` |
+| Moving `head` during LL traversal | List permanently lost | Always copy to `current` first |
+| Two pointers when one suffices | Unnecessary complexity | Act on node before moving |
+ 
+---
+
 ## 🎯 Goal
 
 Become a strong **GIS Developer** by mastering:
 
 1. ✅ Pointers & Memory Management
-2. 🔥 Arrays & Dynamic Arrays ← current
-3. ⏳ Linked Lists
+2. ✅ Arrays & Dynamic Arrays
+3. 🔥 Linked Lists ← current
 4. ⏳ Stacks & Queues
 5. ⏳ Trees & Graphs
 6. ⏳ Python for GIS + Spatial Databases

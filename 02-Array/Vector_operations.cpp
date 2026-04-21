@@ -2,7 +2,8 @@
 #include <vector>
 using namespace std;
 
-void print(const vector <int>& arr)
+// Function to print vector elements
+void print(const vector<int>& arr)
 {
     for(int i = 0; i < arr.size(); i++)
     {
@@ -13,7 +14,7 @@ void print(const vector <int>& arr)
 
 int main () {
     // Program title
-    cout << "Create vector and test it with a lot of opreations" << endl;
+    cout << "Create vector and test it with a lot of operations" << endl;
     
     // Ask user for vector size
     cout << "What is the size of your vector?" << endl;
@@ -27,7 +28,6 @@ int main () {
         cout << "Size cannot be less than or equal to zero!" << endl;
         return 1;
     }
-
 
     // Create vector with given size
     vector<int> arr(size);
@@ -105,9 +105,8 @@ int main () {
 
         if (arr[element - 1] == value)
         {
-            cout << "your value is already " << value << endl;
+            cout << "Value is already " << value << endl;
         }
-
         else
         {
             // Update element
@@ -160,11 +159,12 @@ int main () {
         return 1;
     }
 
-    cout << "Do you want to add new element in your vector? (y/n)" << endl;
+    // Add new element at the end
+    cout << "Do you want to add a new element to your vector? (y/n)" << endl;
     string add;
     cin >> add;
 
-        if(add == "n" || add == "N" || add == "No" || add == "no")
+    if(add == "n" || add == "N" || add == "No" || add == "no")
     {
         cout << "OK, your vector size remains unchanged" << endl;
         cout << "Vector size is still: " << arr.size() << endl;
@@ -172,11 +172,11 @@ int main () {
     }
     else if(add == "y" || add == "Y" || add == "Yes" || add == "yes")
     {
-        // Ask for new size
-        cout << "what is your value of new element of your vector ?" << endl;
-        int AddValue;
-        cin >> AddValue;
-        arr.push_back(AddValue);        
+        // Ask for value to add
+        cout << "What is the value of the new element?" << endl;
+        int addValue;
+        cin >> addValue;
+        arr.push_back(addValue);        
         cout << "Vector size changed to: " << arr.size() << endl; 
         print(arr);
     }
@@ -186,7 +186,8 @@ int main () {
         return 1;
     }
 
-    cout << "Do you want to remove last element in your vector? (y/n)" << endl;
+    // Remove last element
+    cout << "Do you want to remove the last element from your vector? (y/n)" << endl;
     string remove;
     cin >> remove;
 
@@ -200,12 +201,11 @@ int main () {
     {
         if (arr.empty())
         {
-            cout << " your vector is already clean" << endl;
+            cout << "Your vector is already empty!" << endl;
             return 1;
         }
         else
         {
-            // Ask for new size
             arr.pop_back();        
             cout << "Vector size changed to: " << arr.size() << endl; 
             print(arr);
@@ -217,7 +217,8 @@ int main () {
         return 1;
     }
 
-    cout << "Do you want to erase any element in your vector? (y/n)" << endl;
+    // Erase specific element
+    cout << "Do you want to erase any element from your vector? (y/n)" << endl;
     string erase;
     cin >> erase;
 
@@ -229,17 +230,18 @@ int main () {
     }
     else if(erase == "y" || erase == "Y" || erase == "Yes" || erase == "yes")
     {
-        // Ask for new size
-        cout << "what is your number of element you want erase in your vector?" << endl;
-        int EraseValue;
-        cin >> EraseValue;
+        // Ask which element to erase
+        cout << "Which element number do you want to erase?" << endl;
+        int eraseValue;
+        cin >> eraseValue;
 
-        if (EraseValue <= 0 || EraseValue > arr.size())        {
-            cout << "Number of your element incorect!"<< endl;
+        if (eraseValue <= 0 || eraseValue > arr.size())
+        {
+            cout << "Invalid element number!" << endl;
             return 1;
         }
 
-        arr.erase(arr.begin() + (EraseValue-1)); 
+        arr.erase(arr.begin() + (eraseValue - 1)); 
         cout << "Vector size changed to: " << arr.size() << endl; 
         print(arr);
     }
@@ -249,7 +251,8 @@ int main () {
         return 1;
     }
 
-    cout << "Do you want to insert any element in your vector? (y/n)" << endl;
+    // Insert element at specific position
+    cout << "Do you want to insert an element into your vector? (y/n)" << endl;
     string insert;
     cin >> insert;
 
@@ -258,24 +261,26 @@ int main () {
         cout << "OK, your vector size remains unchanged" << endl;
         cout << "Vector size is still: " << arr.size() << endl;
         print(arr);
-
     }
     else if(insert == "y" || insert == "Y" || insert == "Yes" || insert == "yes")
     {
-        // Ask for new size
-        cout << "what is your number of element you want insert in your vector?" << endl;
+        // Ask for position
+        cout << "At which position do you want to insert?" << endl;
         int insertIndex;
         cin >> insertIndex;
 
-        cout << "what is your value of element you want insert in your vector?" << endl;
+        // Ask for value
+        cout << "What is the value of the element to insert?" << endl;
         int insertValue;
         cin >> insertValue;
 
-        if (insertIndex <= 0 || insertIndex > arr.size())        {
-            cout << "Number of your element incorect!"<< endl;
+        if (insertIndex <= 0 || insertIndex > arr.size() + 1)
+        {
+            cout << "Invalid position!" << endl;
             return 1;
         }
-        arr.insert(arr.begin() + (insertIndex-1), insertValue); 
+        
+        arr.insert(arr.begin() + (insertIndex - 1), insertValue); 
         cout << "Vector size changed to: " << arr.size() << endl; 
         print(arr);
     }
@@ -285,12 +290,12 @@ int main () {
         return 1;
     }
 
-    // Ask user if they want to clear the vector
+    // Clear the entire vector
     cout << "Do you want to clear your vector? (y/n)" << endl;
     string clear;
     cin >> clear;
 
-        if(clear == "n" || clear == "N" || clear == "No" || clear == "no")
+    if(clear == "n" || clear == "N" || clear == "No" || clear == "no")
     {
         cout << "OK, your vector size remains unchanged" << endl;
         cout << "Vector size is still: " << arr.size() << endl;
@@ -298,8 +303,7 @@ int main () {
     }
     else if(clear == "y" || clear == "Y" || clear == "Yes" || clear == "yes")
     {
-        // Ask for new size
-        cout << "your vector now is cleared" << endl;
+        cout << "Your vector is now cleared!" << endl;
         arr.clear();
         cout << "Vector size changed to: " << arr.size() << endl;
         cout << "Thank you!" << endl;    
