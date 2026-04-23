@@ -48,7 +48,8 @@ data-structures-journey/
 │   ├── Traversal.cpp
 │   ├── Extract_length_and_maximum_value.cpp
 │   ├── Recursive_reverse_print.cpp
-│   └── Insert_at_front.cpp
+│   ├── Insert_at_front.cpp
+│   └── Insert_at_end.cpp
 │
 ├── 04-stacks-queues/    🔜 Coming soon
 └── 05-trees-graphs/     🔜 Coming soon
@@ -62,7 +63,7 @@ data-structures-journey/
 |-------|--------|-------|
 | Pointers & Dynamic Memory | ✅ Done | 10 files |
 | Arrays | ✅ Done | 13 files |
-| Linked Lists | 🔥 In Progress | 4 files |
+| Linked Lists | 🔥 In Progress | 5 files |
 | Stacks & Queues | ⏳ Planned | — |
 | Trees & Graphs | ⏳ Planned | — |
 
@@ -386,6 +387,7 @@ return false;
 | `Extract_length_and_maximum_value.cpp` | Prints all values via single-pass traversal that counts nodes and finds the maximum value |
 | `Recursive_reverse_print.cpp` | Take (N) values from user and Print it by reverse via single-pass traversal |
 | `Insert_at_front.cpp` | Take (N) value from user and append it in front via single-pass traversal |
+| `Insert_at_end.cpp` | Take (N) value from user and append it in end via single-pass traversal |
 
 
 ---
