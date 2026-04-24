@@ -50,7 +50,8 @@ data-structures-journey/
 │   ├── Recursive_reverse_print.cpp
 │   ├── Insert_at_front.cpp
 │   ├── Insert_at_end.cpp
-│   └── Search.cpp
+│   ├── Search.cpp
+│   └── Delete_at_front.cpp
 │
 ├── 04-stacks-queues/    🔜 Coming soon
 └── 05-trees-graphs/     🔜 Coming soon
@@ -64,7 +65,7 @@ data-structures-journey/
 |-------|--------|-------|
 | Pointers & Dynamic Memory | ✅ Done | 10 files |
 | Arrays | ✅ Done | 13 files |
-| Linked Lists | 🔥 In Progress | 6 files |
+| Linked Lists | 🔥 In Progress | 7 files |
 | Stacks & Queues | ⏳ Planned | — |
 | Trees & Graphs | ⏳ Planned | — |
 
@@ -390,6 +391,9 @@ return false;
 | `Insert_at_front.cpp` | Take (N) value from user and append it in front via single-pass traversal |
 | `Insert_at_end.cpp` | Take (N) value from user and append it in end via single-pass traversal |
 | `Search.cpp` | Searches for a target value in a user-created linked list |
+| `Delete_at_front.cpp` | Builds a linked list from user input, delete the first node and displays the result |
+
+
 
 ---
  
