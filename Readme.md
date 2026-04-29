@@ -52,7 +52,8 @@ data-structures-journey/
 │   ├── Insert_at_end.cpp
 │   ├── Search.cpp
 │   ├── Delete_at_front.cpp
-│   └── Delete_at_end.cpp
+│   ├── Delete_at_end.cpp
+│   └── Insert_before_position.cpp
 │
 ├── 04-stacks-queues/    🔜 Coming soon
 └── 05-trees-graphs/     🔜 Coming soon
@@ -66,7 +67,7 @@ data-structures-journey/
 |-------|--------|-------|
 | Pointers & Dynamic Memory | ✅ Done | 10 files |
 | Arrays | ✅ Done | 13 files |
-| Linked Lists | 🔥 In Progress | 8 files |
+| Linked Lists | 🔥 In Progress | 9 files |
 | Stacks & Queues | ⏳ Planned | — |
 | Trees & Graphs | ⏳ Planned | — |
 
@@ -394,6 +395,9 @@ return false;
 | `Search.cpp` | Searches for a target value in a user-created linked list |
 | `Delete_at_front.cpp` | Builds a linked list from user input, delete the first node and displays the result |
 | `Delete_at_end.cpp` | Builds a linked list from user input, delete the last node and displays the result |
+| `Insert_before_position.cpp` | Creates a linked list of 5 elements, inserts a new node at a user-specified position, and shows the size increase |
+
+
 
 ---
  
