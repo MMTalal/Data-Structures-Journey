@@ -53,58 +53,56 @@ int main() {
 
     cout << endl;
 
-    // Step 4: User input for insertion position
-    cout << "You can delete a value at any position in the linked list" << endl;
-    cout << "Enter position to delete his value : " << endl;
+    // Step 4: User input for value to delete
+    cout << "You can delete any value in the linked list" << endl;
+    cout << "Enter value you want to delete: " << endl;
 
-    int position;
-    cin >> position;
+    int value;
+    cin >> value;
 
-    // Step 5: Delete at beginning
-    if(position == 1)
+    bool found = false;
+
+    // Special case: delete head node
+    if(Head->Data == value)
     {
-        Node* NewHead = Head;
+        Node* toDelete = Head;
         Head = Head->Next;
-        delete NewHead;
+        delete toDelete;
+        found = true;
     }
-
-    // Step 6: Delete in middle or end
-    else if(position > 1)
-    {
-       
-        if(count > position)
-        {
-             // Traverse to node just before the insertion point
-            Node* temp = Head;
-            int i = 1;
-
-            while( i < position - 1)
-            {
-                temp = temp->Next;
-                i++;
-            }
-            if(temp != nullptr || temp->Next = nullptr)
-            {
-                // Rewire pointers to delete node
-                Node* toDelete = temp->Next;
-                temp->Next = toDelete->Next;
-                delete toDelete;
-            }
-        }
-        else
-        {
-
-        }
-    }
-
-    // Step 7: Handle invalid position
     else
     {
-        cout << "Invalid position entered!" << endl;
+        // Search for the value in the list
+        Node* previous = Head;
+        Node* current = Head->Next;
+
+        while(current != nullptr)
+        {
+            if(current->Data == value)
+            {
+                // Delete current node
+                previous->Next = current->Next;
+                delete current;
+                found = true;
+                break;
+            }
+            previous = current;
+            current = current->Next;
+        }
+    }
+
+    // Display result
+    if(found == true)
+    {
+        cout << "Value deleted successfully!" << endl;
+    }
+    else
+    {
+        cout << "Value not found in the linked list!" << endl;
         return 1;
     }
 
-    // Step 8: Display updated list
+    // Display updated list
     int newCount = 0;
     Node* current = Head;
 
@@ -116,10 +114,9 @@ int main() {
     }
 
     cout << endl;
-    cout << "Linked list size decreased from " << count
-         << " to " << newCount << " elements" << endl;
+    cout << "Linked list size decreased from " << count << " to " << newCount << " elements" << endl;
 
-    // Step 9: Free allocated memory
+    // Free allocated memory
     while(Head != nullptr)
     {
         Node* del = Head;
