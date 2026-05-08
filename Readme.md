@@ -55,7 +55,8 @@ data-structures-journey/
 │   ├── Delete_at_end.cpp
 │   ├── Insert_before_position.cpp
 │   ├── Insert_before_Value.cpp
-│   └── Delete_at_Position.cpp
+│   ├── Delete_at_Position.cpp
+│   └── Delete_at_value.cpp
 │
 ├── 04-stacks-queues/    🔜 Coming soon
 └── 05-trees-graphs/     🔜 Coming soon
@@ -69,7 +70,7 @@ data-structures-journey/
 |-------|--------|-------|
 | Pointers & Dynamic Memory | ✅ Done | 10 files |
 | Arrays | ✅ Done | 13 files |
-| Linked Lists | 🔥 In Progress | 11 files |
+| Linked Lists | 🔥 In Progress | 12 files |
 | Stacks & Queues | ⏳ Planned | — |
 | Trees & Graphs | ⏳ Planned | — |
 
@@ -400,8 +401,7 @@ return false;
 | `Insert_before_position.cpp` | Creates a linked list of 5 elements, inserts a new node at a user-specified position, and shows the size increase |
 | `Insert_before_Value.cpp` | Creates a linked list of 5 elements, inserts a new node at a user-specified value, and shows the size increase |
 | `Delete_at_Position.cpp` | Creates a linked list of 5 elements, then deletes the node at a user-specified position and displays the updated list |
-
-
+| `Delete_at_value.cpp` | Creates a linked list of 5 elements, then deletes the node at a user-specified value and displays the updated list |
 
 ---
  
