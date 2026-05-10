@@ -69,11 +69,13 @@ data-structures-journey/
 
 | Topic | Status | Files |
 |-------|--------|-------|
-| Pointers & Dynamic Memory | ✅ Done | 10 files |
-| Arrays | ✅ Done | 13 files |
+| Pointers & Memory Mangement | ✅ Done | 10 files |
+| Arrays & Dynamic Arrays | ✅ Done | 13 files |
 | Linked Lists | ✅ Done | 13 files |
-| Stacks & Queues | ⏳ Planned | — |
-| Trees & Graphs | ⏳ Planned | — |
+| Stacks | ⏳ Planned | — |
+| Queues | ⏳ Planned | — |
+| Trees  | ⏳ Planned | — |
+| Graphs | ⏳ Planned | — |
 
 ---
 
@@ -121,8 +123,70 @@ arr = nullptr;
 | `Dynamic_array_input.cpp` | Creates a dynamic array of 3 integers on the heap from user and print it |
 | `Dynamic_array_input_sum.cpp` | Creates a dynamic array of (N) integers on the heap, and calculates the sum |
 
+---
+
+### 🧠 Key Concepts Summary
+
+#### Memory Layout
+
+```
+Stack                        Heap
+|--------------|            |--------------|
+| int x = 5   |            |     [10]     | ← new int(10)
+| int* p  ----+----------> |   address    |
+|--------------|            |--------------|
+
+Stack → fixed size, auto-managed, fast
+Heap  → dynamic size, manual (new/delete), flexible
+```
+
+#### Pointer Cheat Sheet
+
+```cpp
+int  x  = 5;      // regular variable (Stack)
+int* p  = &x;     // pointer holds address of x
+     *p = 10;     // dereference: change x via pointer → x is now 10
+```
+
+#### Pass by Pointer vs Pass by Reference
+
+```cpp
+// Pass by Pointer — caller must use &
+void increment(int* p) { (*p)++; }
+increment(&x);
+
+// Pass by Reference — cleaner, no & needed at call site
+void increment(int& r) { r++; }
+increment(x);
+```
+
+#### Dynamic Memory Rules
+
+```cpp
+// Single value
+int* p = new int(5);   // allocate
+delete p;              // free
+p = nullptr;           // prevent dangling pointer
+
+// Array
+int* arr = new int[n]; // allocate array
+delete[] arr;          // MUST use delete[] not delete
+arr = nullptr;
+```
+
+#### Common Mistakes to Avoid
+
+| Mistake | Problem | Fix |
+|---------|---------|-----|
+| Forget `delete` after `new` | Memory Leak | Always pair `new` with `delete` |
+| Forget `nullptr` after `delete` | Dangling Pointer | Always set pointer to `nullptr` |
+| Use `delete` on array | Undefined behavior | Use `delete[]` for arrays |
+| Reassign pointer without `delete` | Memory Leak | `delete` first, then reassign |
+| Dereference `nullptr` | Crash | Always check pointer before use |
+| Return address of local variable | Dangling Pointer | Only return Heap addresses |
 
 ---
+
 
 ## 📌 02 — Arrays
 
@@ -473,9 +537,11 @@ Become a strong **GIS Developer** by mastering:
 
 1. ✅ Pointers & Memory Management
 2. ✅ Arrays & Dynamic Arrays
-3. 🔥 Linked Lists ← current
-4. ⏳ Stacks & Queues
-5. ⏳ Trees & Graphs
+3. ✅ Linked Lists 
+4. ⏳ Stacks ← current
+4. ⏳ Queues
+5. ⏳ Trees
+5. ⏳ Graphs
 6. ⏳ Python for GIS + Spatial Databases
 
 ---
@@ -483,6 +549,7 @@ Become a strong **GIS Developer** by mastering:
 ## 📚 Resources
 
 - 🎥 [محمد الدسوقي — Data Structures (YouTube)](https://www.youtube.com/@mohameddesouky)
+- 🎥 [Mega Code — Data Structures with C++ (YouTube)](https://www.youtube.com/@megacodeyt)
 - 📖 Grokking Algorithms
 - 💻 LeetCode — Practice Problems
 
