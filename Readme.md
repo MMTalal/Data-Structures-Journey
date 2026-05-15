@@ -550,6 +550,7 @@ Become a strong **GIS Developer** by mastering:
 
 - 🎥 [محمد الدسوقي — Data Structures (YouTube)](https://www.youtube.com/@mohameddesouky)
 - 🎥 [Mega Code — Data Structures with C++ (YouTube)](https://www.youtube.com/@megacodeyt)
+- 🎥 [Adel Nasim — Data Structures Full Course In Arabic (YouTube)](https://www.youtube.com/@AdelNasim)
 - 📖 Grokking Algorithms
 - 💻 LeetCode — Practice Problems
 
