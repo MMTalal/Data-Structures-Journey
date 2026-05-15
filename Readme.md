@@ -59,8 +59,12 @@ data-structures-journey/
 │   ├── Delete_at_value.cpp
 │   └── Reverse_linked_list.cpp
 │
-├── 04-stacks-queues/    🔜 Coming soon
-└── 05-trees-graphs/     🔜 Coming soon
+├── 04-stacks/  
+│   └── Stack_linked_list.cpp
+│
+├── 05-queues/    🔜 Coming soon
+├── 06-trees-/     🔜 Coming soon
+└── 07-graphs/     🔜 Coming soon
 ```
 
 ---
@@ -72,7 +76,7 @@ data-structures-journey/
 | Pointers & Memory Mangement | ✅ Done | 10 files |
 | Arrays & Dynamic Arrays | ✅ Done | 13 files |
 | Linked Lists | ✅ Done | 13 files |
-| Stacks | ⏳ Planned | — |
+| Linked Lists | ✅ Done | 01 file |
 | Queues | ⏳ Planned | — |
 | Trees  | ⏳ Planned | — |
 | Graphs | ⏳ Planned | — |
@@ -531,6 +535,174 @@ Graph adjacency representation?   → Linked List of lists
  
 ---
 
+Here's the Stack section formatted exactly like the other sections in your README:
+
+---
+
+## 📌 04 — Stacks
+
+### Why Stacks?
+
+A **Stack** is a linear data structure that follows the **LIFO (Last In, First Out)** principle — the last element added is the first one removed. Think of a stack of plates: you add a new plate on top, and when you need a plate, you take from the top first.
+
+```
+Stack (LIFO):
+Push 10 →     [10]
+Push 20 →   [20, 10]
+Push 30 → [30, 20, 10]
+Pop()    →     [20, 10]  ← 30 is removed (last in, first out)
+```
+
+### Concepts Covered
+
+- **LIFO (Last In, First Out)** — the fundamental rule of Stack behavior
+- **Stack operations**: `Push`, `Pop`, `Peek` / `Top`, `IsEmpty`
+- **Two implementation approaches**:
+  - **Array-based Stack** — fixed capacity, simple and fast
+  - **Linked List-based Stack** — dynamic size, no overflow
+- **Top pointer** — the only entry point to the stack
+- **Overflow** (array version) — trying to push when stack is full
+- **Underflow** — trying to pop from an empty stack
+- **Peek vs Pop** — Peek views the top without removing; Pop removes it
+- **Time Complexity** — all operations are **O(1)** 🔥
+
+### Key Rules Learned
+
+```cpp
+// Stack Node (Linked List based)
+struct Node {
+    int Data;
+    Node* Next;
+};
+
+Node* Top = nullptr;  // Points to top element
+```
+
+```cpp
+// Push — add element to top
+void Push(int Value) {
+    Node* NewNode = new Node();
+    NewNode->Data = Value;
+    NewNode->Next = Top;  // New node points to old top
+    Top = NewNode;        // Update top pointer
+}
+```
+
+```cpp
+// Pop — remove element from top
+void Pop() {
+    if (IsEmpty()) {
+        cout << "Stack is empty!" << endl;
+        return;
+    }
+    Node* Del = Top;
+    Top = Top->Next;
+    delete Del;
+}
+```
+
+```cpp
+// Peek — view top element without removing
+int Peek() {
+    if (IsEmpty()) {
+        cout << "Stack is empty!" << endl;
+        return -1;
+    }
+    return Top->Data;
+}
+```
+
+```cpp
+// IsEmpty — check if stack has no elements
+bool IsEmpty() {
+    return Top == nullptr;
+}
+```
+
+### Stack Implementations — Which to Use?
+
+| Implementation | Pros | Cons |
+|----------------|------|------|
+| **Array-based** | Fast, cache-friendly | Fixed size (overflow risk) |
+| **Linked List-based** | Dynamic size, no overflow | Extra memory for pointers |
+
+> **When to use which:** Use **array-based** when you know the maximum size in advance. Use **linked list-based** when size is unknown or dynamic — exactly what we built here.
+
+### Real-World Applications
+
+| Application | How Stack is Used |
+|-------------|-------------------|
+| **Undo/Redo in GIS software** | Each edit pushed to stack; Undo = Pop |
+| **Function call stack** | Stores return addresses and local variables |
+| **Back button in browser** | URLs pushed when visiting; Back = Pop |
+| **Parentheses matching** | Push opening brackets; Pop when closing |
+| **Expression evaluation** | Convert infix to postfix, then evaluate |
+| **Depth-First Search (DFS)** | Graph traversal algorithm |
+| **GIS Path Analysis** | Backtracking in routing algorithms |
+
+### Common Mistakes to Avoid
+
+| Mistake | Problem | Fix |
+|---------|---------|-----|
+| Forgetting `IsEmpty()` check before `Pop` | Pop from empty stack (underflow) | Always check `IsEmpty()` first |
+| Forgetting `IsEmpty()` check before `Peek` | Accessing Top when null (crash) | Always check `IsEmpty()` first |
+| Not updating `Top` after `Pop` | Dangling pointer / memory leak | `Top = Top->Next` before `delete` |
+| Forgetting `delete` after `Pop` | Memory leak | Always `delete` popped nodes |
+| Pushing without checking capacity (array version) | Stack overflow | Check `if (top == MAX-1)` first |
+| Losing `Top` pointer | Entire stack lost | Never move `Top` except through Push/Pop |
+
+### Files
+
+| File | What it does |
+|------|-------------|
+| `Stack_linked_list.cpp` | Creates a stack using linked list, allows push, pop, peek, display, and search operations through an interactive menu |
+
+---
+
+## 🧠 Key Concepts Summary
+
+| Operation | Code | Time Complexity | Description |
+|-----------|------|-----------------|-------------|
+| `Push(x)` | `Top = new Node(x, Top)` | O(1) | Add element to top |
+| `Pop()` | `Top = Top->Next; delete old` | O(1) | Remove top element |
+| `Peek()` | `return Top->Data` | O(1) | View top element |
+| `IsEmpty()` | `return Top == nullptr` | O(1) | Check if stack empty |
+| `Display()` | Traverse from Top | O(n) | Print all elements |
+
+---
+
+### Linked List-based Stack in Memory
+
+```
+After Push(10):          After Push(20):          After Push(30):
+                         
+    Top                      Top                      Top
+     ↓                        ↓                        ↓
+   [10]                    [20]                     [30]
+   null                     ↓                        ↓
+                          [10]                     [20]
+                          null                      ↓
+                                                  [10]
+                                                  null
+
+After Pop():             After Pop():
+    Top                      Top
+     ↓                        ↓
+   [20]                     [10]
+    ↓                       null
+   [10]
+   null
+```
+
+### Array-based Stack in Memory
+
+```
+Array: [10][20][30][ ][ ]    Top = 2 (points to index 2)
+        ↑
+      Push 40 → [10][20][30][40][ ]    Top = 3
+      Pop()    → [10][20][30][ ][ ]    Top = 2  (value 40 removed)
+```
+
 ## 🎯 Goal
 
 Become a strong **GIS Developer** by mastering:
@@ -538,12 +710,11 @@ Become a strong **GIS Developer** by mastering:
 1. ✅ Pointers & Memory Management
 2. ✅ Arrays & Dynamic Arrays
 3. ✅ Linked Lists 
-4. ⏳ Stacks ← current
-4. ⏳ Queues
+4. ✅ Stacks 
+4. ⏳ Queues ← current
 5. ⏳ Trees
 5. ⏳ Graphs
 6. ⏳ Python for GIS + Spatial Databases
-
 ---
 
 ## 📚 Resources
@@ -553,7 +724,6 @@ Become a strong **GIS Developer** by mastering:
 - 🎥 [Adel Nasim — Data Structures Full Course In Arabic (YouTube)](https://www.youtube.com/@AdelNasim)
 - 📖 Grokking Algorithms
 - 💻 LeetCode — Practice Problems
-
 ---
 
 *"Every expert was once a beginner." — Started: March 2026*
