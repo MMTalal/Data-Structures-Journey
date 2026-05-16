@@ -60,7 +60,8 @@ data-structures-journey/
 │   └── Reverse_linked_list.cpp
 │
 ├── 04-stacks/  
-│   └── Stack_linked_list.cpp
+│   ├── Stack_linked_list.cpp
+│   └── STL_stack_demo.cpp
 │
 ├── 05-queues/    🔜 Coming soon
 ├── 06-trees-/     🔜 Coming soon
@@ -76,7 +77,7 @@ data-structures-journey/
 | Pointers & Memory Mangement | ✅ Done | 10 files |
 | Arrays & Dynamic Arrays | ✅ Done | 13 files |
 | Linked Lists | ✅ Done | 13 files |
-| Linked Lists | ✅ Done | 01 file |
+| Linked Lists | ✅ Done | 02 file |
 | Queues | ⏳ Planned | — |
 | Trees  | ⏳ Planned | — |
 | Graphs | ⏳ Planned | — |
@@ -656,6 +657,7 @@ bool IsEmpty() {
 | File | What it does |
 |------|-------------|
 | `Stack_linked_list.cpp` | Creates a stack using linked list, allows push, pop, peek, display, and search operations through an interactive menu |
+| `STL_stack_demo.cpp` | Demonstrates STL stack operations: push, pop, top, size, empty, emplace, and swap |
 
 ---
 
