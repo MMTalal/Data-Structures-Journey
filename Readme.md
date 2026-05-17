@@ -57,7 +57,8 @@ data-structures-journey/
 │   ├── Insert_before_Value.cpp
 │   ├── Delete_at_Position.cpp
 │   ├── Delete_at_value.cpp
-│   └── Reverse_linked_list.cpp
+│   ├── Reverse_linked_list.cpp
+│   └── Music_playlist_circular.cpp
 │
 ├── 04-stacks/  
 │   ├── Stack_linked_list.cpp
@@ -78,8 +79,8 @@ data-structures-journey/
 |-------|--------|-------|
 | Pointers & Memory Mangement | ✅ Done | 10 files |
 | Arrays & Dynamic Arrays | ✅ Done | 13 files |
-| Linked Lists | ✅ Done | 13 files |
-| Linked Lists | ✅ Done | 04 file |
+| Linked Lists | ✅ Done | 14 files |
+| Stack | ✅ Done | 04 file |
 | Queues | ⏳ Planned | — |
 | Trees  | ⏳ Planned | — |
 | Graphs | ⏳ Planned | — |
@@ -475,6 +476,7 @@ return false;
 | `Delete_at_Position.cpp` | Creates a linked list of 5 elements, then deletes the node at a user-specified position and displays the updated list |
 | `Delete_at_value.cpp` | Creates a linked list of 5 elements, then deletes the node at a user-specified value and displays the updated list |
 | `Reverse_linked_list.cpp` | Creates a linked list of 5 elements, then reverse it and displays before and after |
+| `Music_playlist_circular.cpp` | Implements a circular linked list music playlist with next, previous, add, delete, display, and quit functionality |
 
 ---
  
