@@ -61,11 +61,13 @@ data-structures-journey/
 │
 ├── 04-stacks/  
 │   ├── Stack_linked_list.cpp
-│   └── STL_stack_demo.cpp
+│   ├── STL_stack_demo.cpp
+│   ├── Stack_array_static.cpp
+│   └── Stack_array_dynamic.cpp
 │
 ├── 05-queues/    🔜 Coming soon
-├── 06-trees-/     🔜 Coming soon
-└── 07-graphs/     🔜 Coming soon
+├── 06-trees-/    🔜 Coming soon
+└── 07-graphs/    🔜 Coming soon
 ```
 
 ---
@@ -77,7 +79,7 @@ data-structures-journey/
 | Pointers & Memory Mangement | ✅ Done | 10 files |
 | Arrays & Dynamic Arrays | ✅ Done | 13 files |
 | Linked Lists | ✅ Done | 13 files |
-| Linked Lists | ✅ Done | 02 file |
+| Linked Lists | ✅ Done | 04 file |
 | Queues | ⏳ Planned | — |
 | Trees  | ⏳ Planned | — |
 | Graphs | ⏳ Planned | — |
@@ -658,6 +660,8 @@ bool IsEmpty() {
 |------|-------------|
 | `Stack_linked_list.cpp` | Creates a stack using linked list, allows push, pop, peek, display, and search operations through an interactive menu |
 | `STL_stack_demo.cpp` | Demonstrates STL stack operations: push, pop, top, size, empty, emplace, and swap |
+| `Stack_array_static.cpp` | Implements a fixed-size stack using an array with push, pop, peek, and display operations |
+| `Stack_array_dynamic.cpp` | Creates a dynamic array-based stack with user-defined size, then performs push, pop, peek, and display operations |
 
 ---
 
