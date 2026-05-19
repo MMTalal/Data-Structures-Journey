@@ -66,7 +66,9 @@ data-structures-journey/
 │   ├── Stack_array_static.cpp
 │   └── Stack_array_dynamic.cpp
 │
-├── 05-queues/    🔜 Coming soon
+├── 05-queues/
+│   └── Queue_linked_list.cpp
+│
 ├── 06-trees-/    🔜 Coming soon
 └── 07-graphs/    🔜 Coming soon
 ```
@@ -80,8 +82,8 @@ data-structures-journey/
 | Pointers & Memory Mangement | ✅ Done | 10 files |
 | Arrays & Dynamic Arrays | ✅ Done | 13 files |
 | Linked Lists | ✅ Done | 14 files |
-| Stack | ✅ Done | 04 file |
-| Queues | ⏳ Planned | — |
+| Stack | ✅ Done | 04 files |
+| Queue | ✅ Done | 01 file |
 | Trees  | ⏳ Planned | — |
 | Graphs | ⏳ Planned | — |
 
@@ -902,11 +904,7 @@ dq.back();          // view rear element
  
 | File | What it does |
 |------|-------------|
-| `Queue_linked_list.cpp` | Creates a queue using linked list with Front and Rear pointers, supports Enqueue, Dequeue, Peek, IsEmpty, and Display through an interactive menu |
-| `STL_queue_demo.cpp` | Demonstrates STL queue operations: push, pop, front, back, size, empty — and compares queue vs deque behavior |
-| `Queue_array_static.cpp` | Implements a fixed-size array-based queue with Enqueue, Dequeue, Peek, and Display — shows the wasted-slot problem visually |
-| `Queue_array_circular.cpp` | Implements a circular array queue using modulo arithmetic to reuse freed slots, with full Enqueue, Dequeue, Peek, IsFull, and IsEmpty operations |
-| `Queue_deque_demo.cpp` | Demonstrates a double-ended queue (deque) using STL: insert/remove from both Front and Rear, shows when deque is more flexible than queue |
+| `Queue_linked_list.cpp` | Implements a FIFO queue using a linked list with enqueue, dequeue, peek, display, count, search, and cleanup operations |
  
 ---
  
