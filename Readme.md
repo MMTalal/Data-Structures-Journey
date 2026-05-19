@@ -711,6 +711,277 @@ Array: [10][20][30][ ][ ]    Top = 2 (points to index 2)
       Pop()    → [10][20][30][ ][ ]    Top = 2  (value 40 removed)
 ```
 
+## 📌 05 — Queues
+ 
+### Why Queues?
+ 
+A **Queue** is a linear data structure that follows the **FIFO (First In, First Out)** principle — the first element added is the first one removed. Think of a line at a ticket counter: the person who arrived first gets served first.
+ 
+```
+Queue (FIFO):
+Enqueue 10 →  Front [10] Rear
+Enqueue 20 →  Front [10, 20] Rear
+Enqueue 30 →  Front [10, 20, 30] Rear
+Dequeue()  →  Front [20, 30] Rear   ← 10 removed (first in, first out)
+```
+ 
+The critical difference from a Stack: a Stack has **one** access point (top). A Queue has **two** — `Front` for removal, `Rear` for insertion.
+ 
+### Concepts Covered
+ 
+- **FIFO (First In, First Out)** — the fundamental rule of Queue behavior
+- **Two access points**: `Front` (Dequeue side) and `Rear` (Enqueue side)
+- **Queue operations**: `Enqueue`, `Dequeue`, `Peek` / `Front`, `IsEmpty`
+- **Three implementation approaches**:
+  - **Linked List-based Queue** — dynamic size, no overflow, two pointers (Front + Rear)
+  - **Array-based Queue (Static)** — fixed capacity, simple but wastes space after Dequeue
+  - **Circular Array Queue** — fixes wasted space using modulo arithmetic
+- **Underflow** — trying to Dequeue from an empty queue
+- **Overflow** — trying to Enqueue when circular array is full
+- **Deque (Double-Ended Queue)** — insert and remove from both ends
+- **Time Complexity** — all main operations are **O(1)** 🔥
+### Key Rules Learned
+ 
+```cpp
+// Queue Node (Linked List based)
+struct Node {
+    int Data;
+    Node* Next;
+};
+ 
+Node* Front = nullptr;  // Points to first element (Dequeue side)
+Node* Rear  = nullptr;  // Points to last element  (Enqueue side)
+```
+ 
+```cpp
+// Enqueue — add element at Rear
+void Enqueue(int Value) {
+    Node* NewNode = new Node();
+    NewNode->Data = Value;
+    NewNode->Next = nullptr;      // New node is always the last
+ 
+    if (IsEmpty()) {
+        Front = Rear = NewNode;   // First element: both pointers point to it
+    } else {
+        Rear->Next = NewNode;     // Link current last to new node
+        Rear = NewNode;           // Move Rear forward
+    }
+}
+```
+ 
+```cpp
+// Dequeue — remove element from Front
+void Dequeue() {
+    if (IsEmpty()) {
+        cout << "Queue is empty!" << endl;
+        return;
+    }
+    Node* Del = Front;
+    Front = Front->Next;          // Move Front forward
+ 
+    if (Front == nullptr)         // If queue became empty
+        Rear = nullptr;           // Reset Rear too — critical!
+ 
+    delete Del;
+}
+```
+ 
+```cpp
+// Peek — view Front element without removing
+int Peek() {
+    if (IsEmpty()) {
+        cout << "Queue is empty!" << endl;
+        return -1;
+    }
+    return Front->Data;
+}
+```
+ 
+```cpp
+// IsEmpty — check if queue has no elements
+bool IsEmpty() {
+    return Front == nullptr;
+}
+```
+ 
+```cpp
+// Circular Array Queue — the smarter array approach
+// Uses modulo to wrap around and reuse empty slots
+ 
+struct CircularQueue {
+    int* arr;
+    int front, rear, size, capacity;
+ 
+    CircularQueue(int cap) {
+        capacity = cap;
+        arr   = new int[capacity];
+        front = rear = -1;
+        size  = 0;
+    }
+ 
+    bool IsFull()  { return size == capacity; }
+    bool IsEmpty() { return size == 0; }
+ 
+    void Enqueue(int val) {
+        if (IsFull()) { cout << "Queue Full!\n"; return; }
+        rear  = (rear + 1) % capacity;   // wrap around with modulo
+        arr[rear] = val;
+        if (front == -1) front = 0;
+        size++;
+    }
+ 
+    void Dequeue() {
+        if (IsEmpty()) { cout << "Queue Empty!\n"; return; }
+        front = (front + 1) % capacity;  // wrap around with modulo
+        size--;
+        if (size == 0) front = rear = -1;
+    }
+ 
+    int Peek() {
+        if (IsEmpty()) return -1;
+        return arr[front];
+    }
+ 
+    ~CircularQueue() { delete[] arr; arr = nullptr; }
+};
+```
+ 
+```cpp
+// Deque — double-ended queue using STL
+#include <deque>
+ 
+deque<int> dq;
+dq.push_back(10);   // add at rear
+dq.push_front(5);   // add at front
+dq.pop_back();      // remove from rear
+dq.pop_front();     // remove from front
+dq.front();         // view front element
+dq.back();          // view rear element
+```
+ 
+### Queue Implementations — Which to Use?
+ 
+| Implementation | Pros | Cons |
+|----------------|------|------|
+| **Linked List-based** | Dynamic size, no overflow, no wasted slots | Extra memory for pointers |
+| **Array-based (Static)** | Cache-friendly, simple | Fixed size + wasted slots after Dequeue |
+| **Circular Array** | No wasted slots, fixed memory | More complex index logic |
+| **STL `queue`** | Ready to use, no manual memory | Less control over internals |
+| **STL `deque`** | Insert/remove from both ends | Slightly more memory overhead |
+ 
+> **When to use which:** Use **linked list-based** when size is unpredictable. Use **circular array** when you need fixed-memory FIFO (embedded systems, buffers). Use **STL** in real projects.
+ 
+### Real-World Applications
+ 
+| Application | How Queue is Used |
+|-------------|-------------------|
+| **GIS Task Scheduler** | Spatial analysis jobs queued and processed in order |
+| **BFS (Breadth-First Search)** | Explores graph nodes level by level — uses Queue |
+| **Print Spooler** | Print jobs queued; processed in order received |
+| **Network Packet Buffering** | Data packets held in order before transmission |
+| **Undo history with limit** | Circular queue holds last N actions only |
+| **CPU Process Scheduling** | OS processes queued for execution time |
+| **Keyboard Input Buffer** | Keystrokes stored in order before processing |
+| **GIS Route Processing** | Waypoints queued for sequential path analysis |
+ 
+### Common Mistakes to Avoid
+ 
+| Mistake | Problem | Fix |
+|---------|---------|-----|
+| Forgetting `IsEmpty()` check before `Dequeue` | Dequeue from empty queue (crash) | Always check `IsEmpty()` first |
+| Forgetting `IsEmpty()` check before `Peek` | Accessing `Front` when null (crash) | Always check `IsEmpty()` first |
+| Not resetting `Rear = nullptr` when queue becomes empty | `Rear` points to deleted memory | After last Dequeue, set both `Front = Rear = nullptr` |
+| Forgetting `delete` after `Dequeue` | Memory Leak | Always `delete` dequeued nodes |
+| Confusing `Front` and `Rear` roles | Enqueue at Front / Dequeue at Rear | `Enqueue` → `Rear`, `Dequeue` → `Front` |
+| Static array Queue — reusing freed front slots | Wasted memory | Use **Circular Queue** with modulo instead |
+| Wrong modulo in Circular Queue | Index goes out of bounds | Always `(index + 1) % capacity` |
+| Not updating `Front` when using Circular Queue | Front frozen at old slot | Move `Front = (Front + 1) % capacity` after each Dequeue |
+| Treating Queue like a Stack | Wrong order of processing | Queue = FIFO; Stack = LIFO — never confuse them |
+ 
+### Files
+ 
+| File | What it does |
+|------|-------------|
+| `Queue_linked_list.cpp` | Creates a queue using linked list with Front and Rear pointers, supports Enqueue, Dequeue, Peek, IsEmpty, and Display through an interactive menu |
+| `STL_queue_demo.cpp` | Demonstrates STL queue operations: push, pop, front, back, size, empty — and compares queue vs deque behavior |
+| `Queue_array_static.cpp` | Implements a fixed-size array-based queue with Enqueue, Dequeue, Peek, and Display — shows the wasted-slot problem visually |
+| `Queue_array_circular.cpp` | Implements a circular array queue using modulo arithmetic to reuse freed slots, with full Enqueue, Dequeue, Peek, IsFull, and IsEmpty operations |
+| `Queue_deque_demo.cpp` | Demonstrates a double-ended queue (deque) using STL: insert/remove from both Front and Rear, shows when deque is more flexible than queue |
+ 
+---
+ 
+## 🧠 Key Concepts Summary — Queues
+ 
+| Operation | Code (Linked List) | Time Complexity | Description |
+|-----------|-------------------|-----------------|-------------|
+| `Enqueue(x)` | `Rear->Next = new Node(x); Rear = Rear->Next` | O(1) | Add element at Rear |
+| `Dequeue()` | `Front = Front->Next; delete old` | O(1) | Remove element from Front |
+| `Peek()` | `return Front->Data` | O(1) | View Front element without removing |
+| `IsEmpty()` | `return Front == nullptr` | O(1) | Check if queue is empty |
+| `Display()` | Traverse from Front to Rear | O(n) | Print all elements |
+ 
+---
+ 
+### Linked List-based Queue in Memory
+ 
+```
+After Enqueue(10):        After Enqueue(20):        After Enqueue(30):
+ 
+Front/Rear                Front          Rear        Front          Rear
+   ↓                        ↓              ↓            ↓              ↓
+  [10]                    [10]  ───→    [20]          [10] ──→ [20] ──→ [30]
+  null                    null                        null
+ 
+After Dequeue():          After Dequeue():
+ 
+Front      Rear           Front/Rear
+  ↓          ↓               ↓
+[20] ──→  [30]             [30]
+          null              null
+```
+ 
+### Circular Array Queue in Memory
+ 
+```
+capacity = 5
+ 
+Initial:   [ ][ ][ ][ ][ ]    front = -1,  rear = -1
+ 
+Enqueue 10: [10][ ][ ][ ][ ]  front = 0,   rear = 0
+Enqueue 20: [10][20][ ][ ][ ] front = 0,   rear = 1
+Enqueue 30: [10][20][30][ ][ ] front = 0,  rear = 2
+Dequeue():  [ ][20][30][ ][ ] front = 1,   rear = 2  ← slot 0 freed
+Dequeue():  [ ][ ][30][ ][ ]  front = 2,   rear = 2  ← slot 1 freed
+ 
+Enqueue 40: [ ][ ][30][40][ ] front = 2,   rear = 3
+Enqueue 50: [ ][ ][30][40][50] front = 2,  rear = 4
+Enqueue 60: [60][ ][30][40][50] front = 2, rear = 0  ← wraps around! (rear = (4+1) % 5 = 0)
+                                                         reuses freed slot 0
+```
+ 
+### Queue vs Stack — The Key Difference
+ 
+```
+Stack (LIFO)           Queue (FIFO)
+ One opening            Two openings
+    ↕                    →  [  ] →
+  [30]                  Front    Rear
+  [20]                  (remove) (add)
+  [10]
+  ────
+```
+ 
+### Choosing the Right Structure
+ 
+```
+Need LIFO? (last in = first out)          → Stack
+Need FIFO? (first in = first out)         → Queue
+Need insert/remove from BOTH ends?        → Deque
+Need fixed-size buffer (no extra memory)? → Circular Queue
+Need BFS graph traversal?                 → Queue
+Need DFS graph traversal?                 → Stack
+```
+
 ## 🎯 Goal
 
 Become a strong **GIS Developer** by mastering:
