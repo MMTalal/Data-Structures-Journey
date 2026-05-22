@@ -67,7 +67,8 @@ data-structures-journey/
 │   └── Stack_array_dynamic.cpp
 │
 ├── 05-queues/
-│   └── Queue_linked_list.cpp
+│   ├── Queue_linked_list.cpp
+│   └── Queue_array.cpp
 │
 ├── 06-trees-/    🔜 Coming soon
 └── 07-graphs/    🔜 Coming soon
@@ -83,7 +84,7 @@ data-structures-journey/
 | Arrays & Dynamic Arrays | ✅ Done | 13 files |
 | Linked Lists | ✅ Done | 14 files |
 | Stack | ✅ Done | 04 files |
-| Queue | ✅ Done | 01 file |
+| Queue | ✅ Done | 02 file |
 | Trees  | ⏳ Planned | — |
 | Graphs | ⏳ Planned | — |
 
@@ -905,7 +906,8 @@ dq.back();          // view rear element
 | File | What it does |
 |------|-------------|
 | `Queue_linked_list.cpp` | Implements a FIFO queue using a linked list with enqueue, dequeue, peek, display, count, search, and cleanup operations |
- 
+| `Queue_array.cpp` | Implements a FIFO queue using a fixed-size array (vector) with enqueue, dequeue, display, peek, clean, and search operations |
+
 ---
  
 ## 🧠 Key Concepts Summary — Queues
