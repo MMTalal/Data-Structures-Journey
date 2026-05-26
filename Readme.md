@@ -69,7 +69,8 @@ data-structures-journey/
 ├── 05-queues/
 │   ├── Queue_linked_list.cpp
 │   ├── Queue_array.cpp
-│   └── Circular_queue_array.cpp
+│   ├── Circular_queue_array.cpp
+│   └── STL_queue_demo.cpp
 │
 ├── 06-trees-/    🔜 Coming soon
 └── 07-graphs/    🔜 Coming soon
@@ -85,10 +86,17 @@ data-structures-journey/
 | Arrays & Dynamic Arrays | ✅ Done | 13 files |
 | Linked Lists | ✅ Done | 14 files |
 | Stack | ✅ Done | 04 files |
-| Queue | ✅ Done | 03 file |
-| Trees  | ⏳ Planned | — |
+| Queue | ✅ Done | 04 files |
+| Trees  | 🔥 Now | 00 file |
 | Graphs | ⏳ Planned | — |
 
+---
+
+# 📦 Part 1 — Linear Data Structures
+ 
+> Structures where elements are arranged sequentially, one after another.
+> Each element has a unique predecessor and successor (except at boundaries).
+ 
 ---
 
 ## 📌 01 — Pointers & Dynamic Memory
@@ -909,6 +917,8 @@ dq.back();          // view rear element
 | `Queue_linked_list.cpp` | Implements a FIFO queue using a linked list with enqueue, dequeue, peek, display, count, search, and cleanup operations |
 | `Queue_array.cpp` | Implements a FIFO queue using a fixed-size array (vector) with enqueue, dequeue, display, peek, clean, and search operations |
 | `Circular_queue_array.cpp` | Implements a circular queue using a fixed-size array with wrap-around functionality to reuse empty spaces |
+| `STL_queue_demo.cpp` | Demonstrates STL queue operations: push, pop, front, back, size, empty, emplace, and swap |
+
 
 ---
  
@@ -992,6 +1002,603 @@ Need BFS graph traversal?                 → Queue
 Need DFS graph traversal?                 → Stack
 ```
 
+---
+ 
+ 
+# 🌿 Part 2 — Non-Linear Data Structures
+ 
+> Structures where elements are NOT arranged sequentially.
+> Each element can connect to multiple elements, forming hierarchies or networks.
+ 
+---
+ 
+## 📌 06 — Trees
+ 
+### Why Trees?
+ 
+Linear structures (Array, Linked List, Stack, Queue) force elements into a single line. But many real-world problems are **hierarchical** by nature — file systems, organization charts, geographic region hierarchies, and network topologies all have parent-child relationships that a line can't model.
+ 
+A **Tree** solves this: instead of each node pointing to one next node, a node can point to **multiple children**, forming a branching structure.
+ 
+```
+Linear (Linked List):   [10] → [20] → [30] → [40] → NULL
+                         one direction, one connection per node
+ 
+Tree:                           [Root]
+                               /  |  \
+                             [A] [B] [C]
+                            / \   |  / | \
+                          [X] [L][M][D][E][F]
+                         hierarchical, branching, multi-connection
+```
+ 
+> **GIS relevance:** Trees power spatial indexing (R-Tree, QuadTree) used in ArcGIS for fast bounding-box queries, region hierarchies (continent → country → city), decision trees in spatial analysis, and Binary Space Partitioning in 3D GIS rendering.
+ 
+---
+ 
+### Tree Terminology — Visual Reference
+ 
+```
+                        [ Root ]          ← Level 0  (Depth = 0)
+                       /    |    \
+                     [A]   [B]   [C]      ← Level 1  (Depth = 1)
+                    /  \    |   / | \
+                  [X]  [L] [M] [D][E][F]  ← Level 2  (Depth = 2)
+                                           ← Leaf nodes (no children)
+ 
+Height of Tree = 2  (number of edges on longest path from Root to any Leaf)
+Degree of Root = 3  (has 3 children: A, B, C)
+Degree of A    = 2  (has 2 children: X, L)
+Degree of Tree = 3  (max degree among all nodes)
+```
+ 
+---
+ 
+### Concepts Covered
+ 
+#### Core Vocabulary
+ 
+| Term | Definition |
+|------|-----------|
+| **Node** | Basic unit of a tree — holds data and pointers to children |
+| **Edge** | The link/connection between a Parent node and a Child node |
+| **Root** | The topmost node — has no parent; entry point to the entire tree |
+| **Leaf Node** | A node with **no children** — represents the end of a branch |
+| **Internal Node** | Any node that is neither Root nor Leaf — has both a parent and children |
+| **External Node** | Root and Leaf nodes — the boundary nodes of the tree |
+| **Parent** | A node that has one or more children |
+| **Child** | A node that has a parent |
+| **Siblings** | Nodes that share the same parent (e.g., D, E, F are siblings — all children of C) |
+| **Ancestors** | All nodes on the path from a given node up to the Root |
+| **Subtree** | Any node together with all its descendants — can be treated as an independent tree |
+| **Forest** | A collection of disjoint trees |
+ 
+#### Measurement Vocabulary
+ 
+| Term | Definition | Formula / Example |
+|------|-----------|------------------|
+| **Level** | Horizontal layer of nodes — Root is Level 0 | Increases by 1 going downward |
+| **Depth of a Node** | Number of edges from Root to that node | Always equals the node's Level value |
+| **Height of a Node** | Number of edges on the longest path from that node to any Leaf below it | `LastLevel − NodeLevel` |
+| **Height of Tree** | Number of edges on the longest path from Root to any Leaf | Equals the number of the last Level |
+| **Degree of a Node** | Number of children that node has | Root in example above: degree = 3 |
+| **Degree of Tree** | Maximum degree found among all nodes in the tree | = degree of the node with most children |
+ 
+#### Directional Nature
+ 
+A Tree is **directional**: edges flow from Parent → Child, never in reverse. If C points to D, E, F — that means C is the parent, not the children. You **cannot** traverse upward (from D to C) unless the tree explicitly stores a `parent` pointer.
+ 
+#### Relative Terms
+ 
+"Parent" and "Child" are **relative** — the same node can be both:
+- A is a **Child** of Root
+- A is a **Parent** of X and L
+```
+Root → Parent of A, B, C
+A    → Child  of Root   AND   Parent of X, L
+X    → Child  of A      AND   Leaf (no children → degree 0)
+```
+ 
+---
+ 
+### Node Structure in C++
+ 
+```cpp
+// Generic Tree Node — can have multiple children
+struct TreeNode {
+    int Data;
+    TreeNode* Children[MAX_CHILDREN];  // array of child pointers
+    int ChildCount;
+ 
+    TreeNode(int val) : Data(val), ChildCount(0) {
+        for (int i = 0; i < MAX_CHILDREN; i++)
+            Children[i] = nullptr;
+    }
+};
+```
+ 
+```cpp
+// Binary Tree Node — exactly 0, 1, or 2 children
+struct BinaryNode {
+    int Data;
+    BinaryNode* Left;    // left child
+    BinaryNode* Right;   // right child
+ 
+    BinaryNode(int val) : Data(val), Left(nullptr), Right(nullptr) {}
+};
+```
+ 
+> **Key difference from Linked List:** A Linked List node has ONE `next` pointer. A Tree node has TWO or MORE child pointers — that's what makes it non-linear.
+ 
+---
+ 
+### Types of Trees
+ 
+#### 1. General Tree
+- Each node can have **any number** of children (no restriction)
+- Used for: file systems, organizational charts, XML/HTML DOM
+```
+        [CEO]
+       /  |  \
+    [VP1][VP2][VP3]
+    /  \       |
+ [Mgr1][Mgr2][Mgr3]
+```
+ 
+#### 2. Binary Tree
+- Each node has **at most 2 children**: Left and Right
+- The foundation for most other tree types
+- Subtypes:
+| Subtype | Rule |
+|---------|------|
+| **Full Binary Tree** | Every node has exactly 0 or 2 children (never 1) |
+| **Complete Binary Tree** | All levels fully filled except possibly the last; last level filled left to right |
+| **Perfect Binary Tree** | All internal nodes have exactly 2 children AND all leaves are at the same level |
+| **Binary Search Tree (BST)** | Left child < Parent < Right child — enables fast search |
+ 
+```
+Binary Tree:          Complete Binary Tree:      Perfect Binary Tree:
+     [1]                     [1]                        [1]
+    /   \                   /   \                      /   \
+  [2]   [3]              [2]   [3]                  [2]   [3]
+  /                      / \   /                   / \   / \
+[4]                    [4][5][6]                 [4][5][6][7]
+```
+ 
+#### 3. Binary Search Tree (BST)
+- Left subtree contains only values **less than** the parent
+- Right subtree contains only values **greater than** the parent
+- This property applies **recursively** at every node
+```
+         [50]
+        /    \
+      [30]   [70]
+      / \    / \
+   [20][40][60][80]
+ 
+Search for 60:
+  Start at 50 → 60 > 50 → go Right
+  At 70       → 60 < 70 → go Left
+  At 60       → Found! ✓   (only 2 comparisons, not 6)
+```
+ 
+#### 4. Heap (Min-Heap / Max-Heap)
+- A **Complete Binary Tree** that satisfies the Heap property
+- **Max-Heap**: every parent ≥ its children → root holds the maximum value
+- **Min-Heap**: every parent ≤ its children → root holds the minimum value
+- Used for: Priority Queues, sorting (Heap Sort), finding k-th largest/smallest
+```
+Max-Heap:          Min-Heap:
+    [90]               [5]
+   /    \             /   \
+ [70]  [80]         [10]  [8]
+ / \   /            / \
+[50][60][75]      [20][15]
+```
+ 
+#### 5. AVL Tree (Balanced BST)
+- A BST that **self-balances** after every insertion or deletion
+- Balance condition: for every node, the height difference between left and right subtrees is **at most 1**
+- Guarantees O(log n) operations even in worst case
+#### 6. Red-Black Tree
+- A self-balancing BST with less strict balance than AVL
+- Used internally by C++ `std::map` and `std::set`
+- Slightly faster insertions/deletions than AVL; slightly slower lookups
+---
+ 
+### Tree Traversals
+ 
+Traversal means visiting every node exactly once. Unlike linear structures (just go front-to-back), trees offer **multiple valid orders**:
+ 
+#### Depth-First Traversals (use Stack / Recursion)
+ 
+```
+Tree:
+       [1]
+      /   \
+    [2]   [3]
+    / \
+  [4] [5]
+```
+ 
+**Preorder (Root → Left → Right)**
+```
+Visit: 1 → 2 → 4 → 5 → 3
+Rule: Process the node FIRST, then recurse into children
+Use: Copy a tree, serialize tree structure
+```
+ 
+```cpp
+void Preorder(BinaryNode* node) {
+    if (node == nullptr) return;
+    cout << node->Data << " ";   // process Root
+    Preorder(node->Left);        // recurse Left
+    Preorder(node->Right);       // recurse Right
+}
+```
+ 
+**Inorder (Left → Root → Right)**
+```
+Visit: 4 → 2 → 5 → 1 → 3
+Rule: Recurse Left FIRST, then process, then recurse Right
+Use: Produces SORTED output when applied to a BST ← very important!
+```
+ 
+```cpp
+void Inorder(BinaryNode* node) {
+    if (node == nullptr) return;
+    Inorder(node->Left);         // recurse Left
+    cout << node->Data << " ";   // process Root
+    Inorder(node->Right);        // recurse Right
+}
+```
+ 
+**Postorder (Left → Right → Root)**
+```
+Visit: 4 → 5 → 2 → 3 → 1
+Rule: Recurse into BOTH children first, process node last
+Use: Delete a tree (free children before parent), evaluate expression trees
+```
+ 
+```cpp
+void Postorder(BinaryNode* node) {
+    if (node == nullptr) return;
+    Postorder(node->Left);       // recurse Left
+    Postorder(node->Right);      // recurse Right
+    cout << node->Data << " ";   // process Root (last)
+}
+```
+ 
+#### Breadth-First Traversal (use Queue)
+ 
+**Level-Order (BFS)**
+```
+Visit: 1 → 2 → 3 → 4 → 5
+Rule: Visit all nodes at current level before going deeper
+Use: Find shortest path, BFS in graphs, print tree level by level
+```
+ 
+```cpp
+void LevelOrder(BinaryNode* root) {
+    if (root == nullptr) return;
+ 
+    queue<BinaryNode*> q;
+    q.push(root);
+ 
+    while (!q.empty()) {
+        BinaryNode* current = q.front();
+        q.pop();
+ 
+        cout << current->Data << " ";   // process node
+ 
+        if (current->Left)  q.push(current->Left);   // enqueue left child
+        if (current->Right) q.push(current->Right);  // enqueue right child
+    }
+}
+```
+ 
+#### Traversal Comparison
+ 
+| Traversal | Order | Uses Recursion/Stack | Main Use |
+|-----------|-------|---------------------|----------|
+| **Preorder** | Root → L → R | Recursion (Stack) | Copy tree, serialize |
+| **Inorder** | L → Root → R | Recursion (Stack) | Sorted output from BST |
+| **Postorder** | L → R → Root | Recursion (Stack) | Delete tree, evaluate expressions |
+| **Level-Order** | Level by Level | Queue (BFS) | Shortest path, level printing |
+ 
+---
+ 
+### Key Operations on Binary Search Tree (BST)
+ 
+```cpp
+// Search — O(h) where h = height of tree
+BinaryNode* Search(BinaryNode* root, int target) {
+    if (root == nullptr || root->Data == target)
+        return root;                         // found or not in tree
+ 
+    if (target < root->Data)
+        return Search(root->Left, target);   // go left
+    else
+        return Search(root->Right, target);  // go right
+}
+```
+ 
+```cpp
+// Insert — O(h)
+BinaryNode* Insert(BinaryNode* root, int val) {
+    if (root == nullptr)
+        return new BinaryNode(val);          // found empty spot → insert here
+ 
+    if (val < root->Data)
+        root->Left  = Insert(root->Left, val);   // recurse left
+    else if (val > root->Data)
+        root->Right = Insert(root->Right, val);  // recurse right
+    // if val == root->Data → duplicate, do nothing
+ 
+    return root;
+}
+```
+ 
+```cpp
+// Find Minimum — always the leftmost node
+BinaryNode* FindMin(BinaryNode* root) {
+    while (root->Left != nullptr)
+        root = root->Left;
+    return root;
+}
+```
+ 
+```cpp
+// Delete — O(h)  — three cases
+BinaryNode* Delete(BinaryNode* root, int val) {
+    if (root == nullptr) return nullptr;
+ 
+    if (val < root->Data) {
+        root->Left  = Delete(root->Left, val);   // search left
+    } else if (val > root->Data) {
+        root->Right = Delete(root->Right, val);  // search right
+    } else {
+        // Found the node to delete — three cases:
+ 
+        // Case 1: Leaf node (no children) — just delete
+        if (root->Left == nullptr && root->Right == nullptr) {
+            delete root;
+            return nullptr;
+        }
+        // Case 2: One child — replace node with its child
+        else if (root->Left == nullptr) {
+            BinaryNode* temp = root->Right;
+            delete root;
+            return temp;
+        }
+        else if (root->Right == nullptr) {
+            BinaryNode* temp = root->Left;
+            delete root;
+            return temp;
+        }
+        // Case 3: Two children — replace with Inorder Successor (min of right subtree)
+        else {
+            BinaryNode* successor = FindMin(root->Right);
+            root->Data = successor->Data;                      // copy successor's value
+            root->Right = Delete(root->Right, successor->Data); // delete successor
+        }
+    }
+    return root;
+}
+```
+ 
+---
+ 
+### Height & Depth Calculations
+ 
+```cpp
+// Calculate height of a tree
+int Height(BinaryNode* root) {
+    if (root == nullptr) return -1;  // empty tree has height -1
+    int leftHeight  = Height(root->Left);
+    int rightHeight = Height(root->Right);
+    return 1 + max(leftHeight, rightHeight);
+}
+```
+ 
+```cpp
+// Count total nodes in a tree
+int CountNodes(BinaryNode* root) {
+    if (root == nullptr) return 0;
+    return 1 + CountNodes(root->Left) + CountNodes(root->Right);
+}
+```
+ 
+---
+ 
+### Time Complexity — BST Operations
+ 
+| Operation | Average Case (Balanced) | Worst Case (Skewed) |
+|-----------|------------------------|---------------------|
+| **Search** | O(log n) | O(n) |
+| **Insert** | O(log n) | O(n) |
+| **Delete** | O(log n) | O(n) |
+| **Traversal** | O(n) | O(n) |
+| **Find Min/Max** | O(log n) | O(n) |
+ 
+> **Why worst case O(n)?** If you insert sorted data (1, 2, 3, 4, 5...) into a BST, every node goes to the right — creating a straight line, not a tree. This is why **Balanced Trees** (AVL, Red-Black) exist.
+ 
+```
+Balanced BST (h = log n):       Skewed BST (h = n):
+         [4]                     [1]
+        /   \                      \
+      [2]   [6]                    [2]
+      / \   / \                      \
+    [1][3][5][7]                     [3]
+                                       \
+    Search = 3 steps max              [4]
+                                         \
+                                         [5]  ← Search = 5 steps
+```
+ 
+---
+ 
+### Tree vs Other Data Structures
+ 
+| Feature | Array | Linked List | Stack / Queue | BST (Balanced) |
+|---------|-------|-------------|---------------|----------------|
+| **Access by index** | O(1) | O(n) | ✗ | ✗ |
+| **Search** | O(n) | O(n) | ✗ | **O(log n)** |
+| **Insert (ordered)** | O(n) | O(n) | O(1) at one end | **O(log n)** |
+| **Delete (ordered)** | O(n) | O(n) | O(1) at one end | **O(log n)** |
+| **Memory layout** | Contiguous | Scattered | Depends | Scattered (Heap) |
+| **Hierarchy support** | ✗ | ✗ | ✗ | ✓ |
+ 
+---
+ 
+### Visualizing Tree Structure in Memory
+ 
+```
+BinaryNode* root = new BinaryNode(50);
+                          root
+Stack:  | root ptr |       ↓
+        |----------|    [50 | L | R ]  ← on Heap
+                           ↓      ↓
+                       nullptr  nullptr
+ 
+After Insert(30):         root
+                           ↓
+                       [50 | L | R]
+                           ↓
+                   [30 | null | null]   ← Left child
+ 
+After Insert(70):         root
+                           ↓
+                      [50 | L  |  R]
+                          ↓       ↓
+                    [30|n|n]   [70|n|n]
+```
+ 
+---
+ 
+### Real-World Applications
+ 
+| Application | How Tree is Used |
+|-------------|-----------------|
+| **GIS Spatial Indexing (R-Tree / QuadTree)** | Fast bounding-box queries — "find all features in this viewport" |
+| **ArcGIS Geodatabase Schema** | Feature classes, subtypes, domains form a hierarchy |
+| **Geographic Hierarchy** | Continent → Country → Governorate → City → District |
+| **File System** | Directories are parent nodes; files are leaf nodes |
+| **HTML/XML DOM** | Document structure represented as a tree |
+| **Priority Queue (Heap)** | Task scheduling by priority in spatial processing pipelines |
+| **BST for Sorted Data** | Fast lookup, insertion, deletion while maintaining sorted order |
+| **Expression Evaluation** | Math expression trees: `(3 + 4) * 2` stored as a tree |
+| **Decision Trees in Spatial ML** | Classification of land use, vegetation, flood zones |
+| **Huffman Coding** | Data compression — building optimal encoding trees |
+ 
+---
+ 
+### Common Mistakes to Avoid
+ 
+| Mistake | Problem | Fix |
+|---------|---------|-----|
+| Forgetting base case `if (root == nullptr) return` in recursion | Infinite recursion / crash | Always check for null before accessing node data |
+| Confusing Inorder with Preorder | Wrong output order | Remember: In = L-Root-R, Pre = Root-L-R, Post = L-R-Root |
+| Deleting a node with two children without finding Inorder Successor | Breaks BST property | Always replace with min of right subtree (or max of left) |
+| Not freeing tree memory after use | Memory Leak | Use Postorder traversal to `delete` nodes (children before parent) |
+| Inserting sorted data into unbalanced BST | O(n) degeneration | Use AVL or Red-Black Tree for guaranteed O(log n) |
+| Treating tree height as number of nodes | Wrong calculations | Height = number of **edges**, not nodes, on longest path |
+| Moving `root` pointer during traversal | Tree is lost | Always use a local `node` parameter, never modify `root` |
+| Forgetting `return root` after recursive Insert/Delete | Tree structure broken | Insert/Delete must return the (possibly new) root of each subtree |
+| Confusing Level with Depth | Wrong terminology | Both equal the same value; Level 0 = Depth 0 = Root |
+| Not handling empty tree before operations | Null pointer crash | Check `if (root == nullptr)` at the start of every function |
+ 
+---
+ 
+### Files
+ 
+| File | What it does |
+|------|-------------|
+| `BinaryTree_traversals.cpp` | Builds a Binary Tree manually and demonstrates all four traversals: Preorder, Inorder, Postorder, Level-Order |
+| `BST_insert_search.cpp` | Implements a BST with Insert and Search operations, prints result of Inorder traversal (sorted output) |
+| `BST_delete.cpp` | Implements all three deletion cases: leaf node, one child, two children (Inorder Successor) |
+| `Tree_height_count.cpp` | Calculates tree height and total node count using recursive functions |
+| `BST_min_max.cpp` | Finds minimum value (leftmost node) and maximum value (rightmost node) in a BST |
+ 
+---
+ 
+## 🧠 Key Concepts Summary — Trees
+ 
+| Operation | Code Pattern | Time Complexity | Description |
+|-----------|-------------|-----------------|-------------|
+| `Search(root, x)` | Recurse L or R based on comparison | O(log n) avg / O(n) worst | Find a value in BST |
+| `Insert(root, x)` | Recurse to empty spot, create node | O(log n) avg / O(n) worst | Add value maintaining BST order |
+| `Delete(root, x)` | Handle 3 cases; return updated root | O(log n) avg / O(n) worst | Remove node, preserve BST property |
+| `Height(root)` | `1 + max(Height(L), Height(R))` | O(n) | Measure longest root-to-leaf path |
+| `CountNodes(root)` | `1 + Count(L) + Count(R)` | O(n) | Count all nodes |
+| `Inorder(root)` | L → Root → R | O(n) | Sorted output for BST |
+| `Preorder(root)` | Root → L → R | O(n) | Copy / serialize tree |
+| `Postorder(root)` | L → R → Root | O(n) | Delete tree, evaluate expressions |
+| `LevelOrder(root)` | BFS with Queue | O(n) | Level-by-level traversal |
+ 
+---
+ 
+### BST in Memory — Step by Step
+ 
+```
+Insert sequence: 50, 30, 70, 20, 40
+ 
+Step 1 — Insert 50:          Step 2 — Insert 30:          Step 3 — Insert 70:
+        root                          root                          root
+         ↓                             ↓                             ↓
+       [50]                          [50]                          [50]
+      L:null R:null                  /                             /   \
+                                  [30]                          [30]  [70]
+ 
+Step 4 — Insert 20:          Step 5 — Insert 40:
+        root                          root
+         ↓                             ↓
+       [50]                          [50]
+       /   \                         /   \
+    [30]  [70]                    [30]  [70]
+    /                             /  \
+  [20]                          [20][40]
+ 
+Inorder of final tree: 20 → 30 → 40 → 50 → 70  ← sorted! ✓
+```
+ 
+### BST Property — Quick Mental Check
+ 
+```
+For ANY node in a valid BST:
+  ✓ ALL values in LEFT  subtree < node value
+  ✓ ALL values in RIGHT subtree > node value
+  ✓ Both subtrees are themselves valid BSTs
+ 
+Quick check on [50,30,70,20,40]:
+  Is 20 in left subtree of 50?  → 20 < 50 ✓
+  Is 70 in right subtree of 50? → 70 > 50 ✓
+  Is 20 in left subtree of 30?  → 20 < 30 ✓
+  Is 40 in right subtree of 30? → 40 > 30 ✓  → Valid BST ✓
+```
+ 
+### Traversal Memory Aid
+ 
+```
+Pre  =  ROOT first  →  "I go first, children later"
+In   =  ROOT middle →  "Left child, then me, then right child"
+Post =  ROOT last   →  "Children first, I come last"
+Level = floor by floor (BFS with Queue)
+```
+ 
+### Choosing the Right Tree Type
+ 
+```
+Need sorted data + fast search/insert/delete?    → BST
+BST + guaranteed O(log n) in ALL cases?          → AVL Tree
+BST + used by STL (map/set)?                     → Red-Black Tree
+Need to find min/max instantly?                  → Heap (Min/Max)
+Need fast BFS (level-order) traversal?           → any tree + Queue
+Need spatial range queries in GIS?               → R-Tree / QuadTree
+```
+ 
+---
+
 ## 🎯 Goal
 
 Become a strong **GIS Developer** by mastering:
@@ -1000,8 +1607,8 @@ Become a strong **GIS Developer** by mastering:
 2. ✅ Arrays & Dynamic Arrays
 3. ✅ Linked Lists 
 4. ✅ Stacks 
-4. ⏳ Queues ← current
-5. ⏳ Trees
+4. ✅ Queues 
+5. 🔥 Trees ← current
 5. ⏳ Graphs
 6. ⏳ Python for GIS + Spatial Databases
 ---
