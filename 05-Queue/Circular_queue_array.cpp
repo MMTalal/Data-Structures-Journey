@@ -10,13 +10,28 @@ vector<int> arr;    // Dynamic array to store queue elements
 // Check if the queue is empty
 bool IsEmpty()
 {
-    return (front == -1 && rear == -1);
+    if(front == -1 && rear == -1)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    };
 }
 
 // Check if the queue is full (Circular logic)
 bool IsFull()
 {
-    return (rear + 1) % size == front;
+    // Use modulo to simulate circular movement in the queue
+    if((rear + 1) % size == front)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 // Add an element to the rear of the queue (Circular)
@@ -93,6 +108,7 @@ void Display()
     while(i != rear)
     {
         cout << arr[i] << " ";
+        // Keep traversal within circular queue bounds
         i = (i + 1) % size;
     }
 
@@ -190,15 +206,23 @@ int main()
         Enqueue(num);   
     }
 
+    cout << "Queue is empty ? " << IsEmpty() << endl;
+    cout << "Queue is full ? " << IsFull() << endl;
     Display();
+    Peek();
+    cout << "Front = " << front << endl;
+    cout << "Rear = " << rear << endl;
     Dequeue();
+    cout << "Front = " << front << endl;
+    cout << "Rear = " << rear << endl;
     Search(20);
     Display();
     Peek();
-    Clean();
+    Enqueue(10);
     Display();
-    Peek();
-
+    cout << "Front = " << front << endl;
+    cout << "Rear = " << rear << endl;
+    Clean();
 
     return 0;    
 }
