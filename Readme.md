@@ -72,7 +72,9 @@ data-structures-journey/
 │   ├── Circular_queue_array.cpp
 │   └── STL_queue_demo.cpp
 │
-├── 06-trees-/    🔜 Coming soon
+├── 06-trees/
+│   └── Binary_search_tree.cpp
+│   
 └── 07-graphs/    🔜 Coming soon
 ```
 
@@ -87,7 +89,7 @@ data-structures-journey/
 | Linked Lists | ✅ Done | 14 files |
 | Stack | ✅ Done | 04 files |
 | Queue | ✅ Done | 04 files |
-| Trees  | 🔥 Now | 00 file |
+| Trees  | ✅ Done | 01 file |
 | Graphs | ⏳ Planned | — |
 
 ---
@@ -1514,12 +1516,8 @@ After Insert(70):         root
  
 | File | What it does |
 |------|-------------|
-| `BinaryTree_traversals.cpp` | Builds a Binary Tree manually and demonstrates all four traversals: Preorder, Inorder, Postorder, Level-Order |
-| `BST_insert_search.cpp` | Implements a BST with Insert and Search operations, prints result of Inorder traversal (sorted output) |
-| `BST_delete.cpp` | Implements all three deletion cases: leaf node, one child, two children (Inorder Successor) |
-| `Tree_height_count.cpp` | Calculates tree height and total node count using recursive functions |
-| `BST_min_max.cpp` | Finds minimum value (leftmost node) and maximum value (rightmost node) in a BST |
- 
+| `Binary_search_tree.cpp` | Implements a Binary Search Tree with insert, three traversals (pre/in/post), search, min, max, and deletion operations |
+
 ---
  
 ## 🧠 Key Concepts Summary — Trees
