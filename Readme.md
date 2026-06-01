@@ -1516,7 +1516,7 @@ After Insert(70):         root
  
 | File | What it does |
 |------|-------------|
-| `Binary_search_tree.cpp` | Implements a Binary Search Tree with insert, three traversals (pre/in/post), search, min, max, and deletion operations |
+| `Binary_search_tree.cpp` | Implements a Binary Search Tree with insertion, three traversals (pre/in/post), search, min/max, deletion, node count, height calculation, balance checking, and memory cleanup |
 
 ---
  
