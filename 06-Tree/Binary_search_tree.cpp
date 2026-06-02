@@ -301,9 +301,15 @@ void Delete(int value)
         cout << "BST is empty!" << endl;
         return;
     }
-
-    Root = DeleteNode(Root, value);
-    cout << "Delete operation executed" << endl;
+    if(SearchNode(Root,value))
+    {
+        Root = DeleteNode(Root,value);
+        cout<<"Value deleted successfully"<<endl;
+    }
+    else
+    {
+        cout<<"Value not found"<<endl;
+    }
 }
 
 // COUNT NODES
@@ -411,7 +417,7 @@ int main()
 
     if(size <= 0)
     {
-        cout << "your size cannot less than or equal to zero!" << endl;
+        cout << "Your size cannot be less than or equal to zero!" << endl;
         return 1;
     }
 
@@ -434,14 +440,55 @@ int main()
     cout << "Inorder   : "; PrintInorder();   cout << endl;
     cout << "Postorder : "; PrintPostorder(); cout << endl;
 
-    // Search for a value (50 – likely not present)
-    Search(50);
+    cout << "Do you want Search of any value Y/N? " << endl;
+    string SearchResponding;
+    cin >> SearchResponding;
+
+    int SearchValue;
+    if (SearchResponding == "Y" || SearchResponding == "y" )
+    {
+        cout << "Enter the value you want to search for " << endl;
+        cin >> SearchValue;
+        // Search for a value
+        Search(SearchValue);
+    }
+    else if (SearchResponding == "N" || SearchResponding == "n")
+    {
+        cout << "It's Ok" << endl;
+    }
+    else
+    {
+        cout << "Wrong entered" << endl;
+    }
+
+    // Additional metrics: height and balance
+    Height();
+    Balance();
+
     // Show min and max
     Min();
     Max();
 
-    // Delete node with value 30
-    Delete(30);
+    cout << "Do you want delete any value Y/N? " << endl;
+    string DeleteResponding;
+    cin >> DeleteResponding;
+
+    int DeleteValue;
+    if (DeleteResponding == "Y" || DeleteResponding == "y" )
+    {
+        cout << "Enter the value you want to delete for " << endl;
+        cin >> DeleteValue;
+        // Delete node
+        Delete(DeleteValue);
+    }
+    else if (DeleteResponding == "N" || DeleteResponding == "n")
+    {
+        cout << "It's Ok" << endl;
+    }
+    else
+    {
+        cout << "Wrong entered" << endl;
+    }
 
     // Show updated tree
     cout << "Total elements is " << CountNodes(Root) << endl;
@@ -456,6 +503,7 @@ int main()
     // Additional metrics: height, balance, and cleanup
     Height();
     Balance();
+    
     Clean();   // Free all memory before program ends
 
     return 0;
