@@ -73,7 +73,8 @@ data-structures-journey/
 │   └── STL_queue_demo.cpp
 │
 ├── 06-trees/
-│   └── Binary_search_tree.cpp
+│   ├── Binary_search_tree.cpp
+│   └── Huffman.cpp
 │   
 └── 07-graphs/    🔜 Coming soon
 ```
@@ -89,7 +90,7 @@ data-structures-journey/
 | Linked Lists | ✅ Done | 14 files |
 | Stack | ✅ Done | 04 files |
 | Queue | ✅ Done | 04 files |
-| Trees  | ✅ Done | 01 file |
+| Trees  | ✅ Done | 02 file |
 | Graphs | ⏳ Planned | — |
 
 ---
@@ -1517,6 +1518,8 @@ After Insert(70):         root
 | File | What it does |
 |------|-------------|
 | `Binary_search_tree.cpp` | Builds a BST from user input, then interactively searches for a value, deletes a value, and displays traversals, height, balance, min, max, and finally cleans all memory |
+| `Huffman.cpp` | Compresses a user‑input string using Huffman coding, then decompresses it to verify correctness, and prints frequency table, codes, and compression statistics |
+
 
 ---
  
