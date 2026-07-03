@@ -1598,6 +1598,369 @@ Need fast BFS (level-order) traversal?           → any tree + Queue
 Need spatial range queries in GIS?               → R-Tree / QuadTree
 ```
  
+## 📌 07 — Graphs
+
+### Why Graphs?
+
+Trees are strict: one root, one parent per node, no cycles. But most real networks aren't that tidy — road intersections connect to many other intersections, a utility network loops back on itself, and a social network has no "root" at all. A **Graph** removes the tree's restrictions: any node (**vertex**) can connect to any other node through an **edge**, connections can go both ways, and cycles are perfectly normal.
+
+```
+Tree (hierarchical, no cycles):        Graph (networked, cycles allowed):
+
+         [Root]                          [A]───────[B]
+        /   |   \                         │  \      /│
+      [A]  [B]  [C]                       │   \    / │
+     one parent per node                  │    \  /  │
+     no going back up                    [D]────[C]  │
+                                          └──────────┘
+                                     any node ↔ any node, cycles OK
+```
+
+> **GIS relevance:** Graphs *are* the data model behind road-network routing (Google Maps, ArcGIS Network Analyst), OSM's node-way topology, utility/pipeline tracing, watershed/drainage networks, and shortest-path algorithms like Dijkstra and A* used for turn-by-turn navigation.
+
+---
+
+### Graph Terminology — Visual Reference
+
+```
+        (10)               ← Weight of edge B–C
+   [A]────────[B]
+    │           │  \
+    │           │   \(4)
+   (6)         (2)    \
+    │           │      \
+   [D]─────────[C]─────[E]
+        (7)
+
+Vertex (Node)   → A point in the graph: A, B, C, D, E
+Edge            → A connection between two vertices: A–B, B–C...
+Weight          → Cost/distance/time assigned to an edge (10, 6, 2...)
+Degree          → Number of edges touching a vertex (degree of C = 3)
+Path            → Sequence of vertices connected by edges: A → B → C
+Cycle           → A path that starts and ends at the same vertex: B → C → E → B
+Adjacent        → Two vertices directly connected by an edge
+Connected Graph → A path exists between every pair of vertices
+```
+
+| Type | Meaning | Example |
+|------|---------|---------|
+| **Directed Graph (Digraph)** | Edges have a direction: A → B ≠ B → A | One-way streets |
+| **Undirected Graph** | Edges go both ways: A – B == B – A | Two-way roads |
+| **Weighted Graph** | Edges carry a cost/value | Road distance in km |
+| **Unweighted Graph** | Edges just represent a connection | Social network "follows" |
+| **Cyclic Graph** | Contains at least one cycle | Road network with a roundabout |
+| **Acyclic Graph (DAG)** | No cycles, edges directed | Task dependency chains |
+
+---
+
+### Concepts Covered
+
+- **Vertex (Node)** and **Edge** — the two building blocks of any graph
+- **Directed** vs **Undirected** graphs
+- **Weighted** vs **Unweighted** graphs
+- Two ways to represent a graph in memory: **Adjacency Matrix** vs **Adjacency List**
+- **Graph Traversal**: **BFS** (Breadth-First Search) using a Queue and **DFS** (Depth-First Search) using recursion/Stack
+- **Cycle Detection** (undirected and directed graphs)
+- **Connected Components** — finding isolated "islands" in a graph
+- **Shortest Path** concept — Dijkstra's Algorithm for weighted graphs (used in GIS routing)
+
+---
+
+### Graph Representations
+
+#### 1. Adjacency Matrix — 2D grid of 0/1 (or weights)
+
+```cpp
+// n vertices → n x n matrix
+int n = 5;
+vector<vector<int>> adjMatrix(n, vector<int>(n, 0));
+
+// Add an undirected edge between vertex 0 and vertex 1
+adjMatrix[0][1] = 1;
+adjMatrix[1][0] = 1;   // symmetric because undirected
+
+// Weighted version — store the weight instead of 1
+adjMatrix[0][1] = 10;  // A–B costs 10
+adjMatrix[1][0] = 10;
+```
+
+```
+     A  B  C  D  E
+A  [ 0  1  0  1  0 ]
+B  [ 1  0  1  0  0 ]
+C  [ 0  1  0  1  1 ]
+D  [ 1  0  1  0  0 ]
+E  [ 0  0  1  0  0 ]
+
+Reading row A: connected to B and D → matches A–B and A–D edges
+```
+
+#### 2. Adjacency List — array/vector of lists (most common in practice)
+
+```cpp
+// n vertices, each holding a list of its neighbors
+vector<vector<int>> adjList(n);
+
+// Add an undirected edge between vertex 0 and vertex 1
+adjList[0].push_back(1);
+adjList[1].push_back(0);
+
+// Weighted version — store {neighbor, weight} pairs
+vector<vector<pair<int,int>>> weightedList(n);
+weightedList[0].push_back({1, 10});   // A → B, weight 10
+weightedList[1].push_back({0, 10});   // B → A, weight 10
+```
+
+```
+adjList[A] → [B, D]
+adjList[B] → [A, C]
+adjList[C] → [B, D, E]
+adjList[D] → [A, C]
+adjList[E] → [C]
+```
+
+#### Adjacency Matrix vs Adjacency List
+
+| Feature | Adjacency Matrix | Adjacency List |
+|---------|------------------|-----------------|
+| **Space** | O(V²) — wasteful for sparse graphs | O(V + E) — efficient |
+| **Check if edge exists** | O(1) — direct lookup | O(degree) — scan the list |
+| **Iterate all neighbors** | O(V) — scan whole row | O(degree) — only real neighbors |
+| **Add an edge** | O(1) | O(1) |
+| **Best for** | Dense graphs, small V, frequent edge lookups | Sparse graphs (most real-world/GIS networks) |
+
+> **GIS road networks are sparse** — an intersection connects to a handful of roads, not to every other intersection in the city. That's why **Adjacency List** is the standard choice for road-network and routing data.
+
+---
+
+### Graph Traversal — BFS & DFS
+
+```cpp
+// BFS — Breadth-First Search (level by level, uses a Queue)
+void BFS(vector<vector<int>>& adjList, int start, int n) {
+    vector<bool> visited(n, false);
+    queue<int> q;
+
+    visited[start] = true;
+    q.push(start);
+
+    while (!q.empty()) {
+        int current = q.front();
+        q.pop();
+        cout << current << " ";              // visit
+
+        for (int neighbor : adjList[current]) {
+            if (!visited[neighbor]) {
+                visited[neighbor] = true;      // mark BEFORE pushing
+                q.push(neighbor);
+            }
+        }
+    }
+}
+```
+
+```cpp
+// DFS — Depth-First Search (go deep first, uses recursion/Stack)
+void DFS(vector<vector<int>>& adjList, int current, vector<bool>& visited) {
+    visited[current] = true;
+    cout << current << " ";                   // visit
+
+    for (int neighbor : adjList[current]) {
+        if (!visited[neighbor]) {
+            DFS(adjList, neighbor, visited);   // recurse deeper
+        }
+    }
+}
+```
+
+```cpp
+// DFS — Iterative version using an explicit Stack
+void DFS_Iterative(vector<vector<int>>& adjList, int start, int n) {
+    vector<bool> visited(n, false);
+    stack<int> s;
+    s.push(start);
+
+    while (!s.empty()) {
+        int current = s.top();
+        s.pop();
+
+        if (!visited[current]) {
+            visited[current] = true;
+            cout << current << " ";
+
+            for (int neighbor : adjList[current])
+                if (!visited[neighbor]) s.push(neighbor);
+        }
+    }
+}
+```
+
+#### BFS vs DFS
+
+| Feature | BFS | DFS |
+|---------|-----|-----|
+| **Data structure used** | Queue | Stack (or recursion) |
+| **Explores** | Level by level (nearby first) | Branch by branch (deep first) |
+| **Shortest path (unweighted)** | ✓ Guarantees shortest path in # of edges | ✗ Does not guarantee shortest path |
+| **Memory usage** | Can be higher (stores whole level) | Usually lower (stores one path) |
+| **Typical use** | Shortest route, level-order, nearest neighbors | Cycle detection, topological sort, maze solving |
+| **GIS example** | "Nearest N intersections from here" | "Is there any path at all to this feature" |
+
+---
+
+### Weighted Graphs & Shortest Path (Dijkstra)
+
+For GIS routing (distance/time between two points), an unweighted BFS isn't enough — roads have different lengths. **Dijkstra's Algorithm** finds the shortest weighted path from a source vertex to all others using a **Min-Priority Queue**:
+
+```cpp
+// Dijkstra — shortest path from 'start' to every vertex
+vector<int> Dijkstra(vector<vector<pair<int,int>>>& adjList, int start, int n) {
+    vector<int> dist(n, INT_MAX);
+    priority_queue<pair<int,int>, vector<pair<int,int>>, greater<>> pq; // {distance, vertex}
+
+    dist[start] = 0;
+    pq.push({0, start});
+
+    while (!pq.empty()) {
+        auto [d, current] = pq.top(); pq.pop();
+        if (d > dist[current]) continue;      // stale entry, skip
+
+        for (auto& [neighbor, weight] : adjList[current]) {
+            if (dist[current] + weight < dist[neighbor]) {
+                dist[neighbor] = dist[current] + weight;
+                pq.push({dist[neighbor], neighbor});
+            }
+        }
+    }
+    return dist;
+}
+```
+
+> This is the algorithmic core behind "shortest route" in ArcGIS Network Analyst and Google Maps — the road network is a weighted graph, and Dijkstra (or its faster relative A*) finds the minimum-cost path.
+
+---
+
+### Time Complexity — Graph Operations
+
+| Operation | Adjacency Matrix | Adjacency List |
+|-----------|-------------------|-----------------|
+| **Add Vertex** | O(V²) — resize matrix | O(1) |
+| **Add Edge** | O(1) | O(1) |
+| **Remove Edge** | O(1) | O(degree) |
+| **Check if edge exists** | O(1) | O(degree) |
+| **BFS / DFS** | O(V²) | O(V + E) |
+| **Dijkstra (with min-heap)** | O(V² ) | O((V + E) log V) |
+
+> **Why O(V + E) matters:** in a sparse GIS road network with thousands of intersections but only a few roads per intersection, Adjacency List traversal is dramatically faster than scanning a mostly-empty V×V matrix.
+
+---
+
+### Real-World Applications
+
+| Application | How Graph is Used |
+|-------------|--------------------|
+| **GIS Road Network Routing** | Intersections = vertices, roads = weighted edges; Dijkstra/A* find the shortest route |
+| **OpenStreetMap Topology** | Nodes and ways form a graph used for routing engines like OSRM/GraphHopper |
+| **ArcGIS Network Analyst** | Utility, water, and transportation networks modeled as directed weighted graphs |
+| **Utility/Pipeline Tracing** | Trace upstream/downstream flow through a pipe or cable network via graph traversal |
+| **Watershed & Drainage Networks** | Streams and confluence points modeled as a directed graph flowing downhill |
+| **Social Network Analysis** | People = vertices, relationships = edges; BFS finds "degrees of separation" |
+| **Flight/Transit Route Maps** | Airports/stations = vertices, routes = weighted edges (cost, time, distance) |
+| **Task Dependency Scheduling** | Directed Acyclic Graph (DAG) + Topological Sort determines valid execution order |
+| **Web Crawling** | Pages = vertices, hyperlinks = directed edges; BFS/DFS crawl the web |
+
+---
+
+### Common Mistakes to Avoid
+
+| Mistake | Problem | Fix |
+|---------|---------|-----|
+| Forgetting to mark a vertex `visited` before pushing to the Queue (BFS) | Same vertex pushed multiple times, duplicate visits | Mark `visited = true` at the moment you push, not when you pop |
+| Marking `visited` only inside DFS recursion entry, not before recursive call | Infinite recursion on cyclic graphs | Check and set `visited` right before recursing |
+| Adding an edge only in one direction for an undirected graph | Traversal misses valid paths | For undirected graphs, always add the edge both ways: `adjList[u].push_back(v)` and `adjList[v].push_back(u)` |
+| Using Adjacency Matrix for a large sparse graph | Wastes huge amounts of memory (O(V²)) | Use Adjacency List for sparse graphs like road networks |
+| Assuming DFS gives the shortest path | Wrong path length assumptions | Only BFS guarantees shortest path in an **unweighted** graph; use Dijkstra for weighted graphs |
+| Running Dijkstra on a graph with **negative** edge weights | Incorrect shortest-path results | Dijkstra requires non-negative weights; use Bellman-Ford instead if negatives exist |
+| Not handling disconnected graphs | Traversal from one start vertex misses other components | Loop over all vertices, run BFS/DFS from any unvisited vertex to catch every component |
+| Confusing Directed and Undirected when detecting cycles | Wrong cycle-detection logic | Undirected cycle check ≠ Directed cycle check (directed needs a "currently in recursion stack" tracker) |
+
+---
+
+### Files
+
+| File | What it does |
+|------|-------------|
+
+---
+
+## 🧠 Key Concepts Summary — Graphs
+
+| Operation | Code Pattern | Time Complexity | Description |
+|-----------|-------------|-----------------|-------------|
+| `AddEdge(u, v)` | `adjList[u].push_back(v)` | O(1) | Connect two vertices |
+| `BFS(start)` | Queue + `visited[]`, mark before push | O(V + E) | Level-by-level traversal, shortest path (unweighted) |
+| `DFS(start)` | Recursion/Stack + `visited[]` | O(V + E) | Depth-first traversal, cycle detection |
+| `HasEdge(u, v)` | Scan `adjList[u]` for `v` | O(degree) | Check if two vertices are connected |
+| `Dijkstra(start)` | Min-heap + relax neighbors | O((V+E) log V) | Shortest weighted path from source to all vertices |
+| `ConnectedComponents()` | BFS/DFS from every unvisited vertex | O(V + E) | Count/label isolated sub-graphs |
+
+---
+
+### Graph in Memory — Step by Step
+
+```
+Building an Adjacency List from edges: A–B, A–D, B–C, C–D, C–E
+
+Step 1 — Add A–B:              Step 2 — Add A–D:
+adjList[A] → [B]               adjList[A] → [B, D]
+adjList[B] → [A]               adjList[B] → [A]
+                                adjList[D] → [A]
+
+Step 3 — Add B–C:              Step 4 — Add C–D:
+adjList[B] → [A, C]            adjList[C] → [B, D]
+adjList[C] → [B]               adjList[D] → [A, C]
+
+Step 5 — Add C–E:
+adjList[C] → [B, D, E]
+adjList[E] → [C]
+
+Final Adjacency List:
+A → [B, D]
+B → [A, C]
+C → [B, D, E]
+D → [A, C]
+E → [C]
+```
+
+### BFS vs DFS — Quick Mental Check
+
+```
+BFS from A:  visit A → visit all of A's neighbors first (B, D)
+             → THEN their neighbors (C)
+             → THEN C's remaining neighbor (E)
+             Order:  A, B, D, C, E     (spreads outward, ring by ring)
+
+DFS from A:  visit A → dive into first neighbor (B)
+             → dive into B's first unvisited neighbor (C)
+             → dive into C's first unvisited neighbor (D)
+             → backtrack, visit E
+             Order:  A, B, C, D, E     (goes deep before wide)
+```
+
+### Choosing the Right Graph Representation / Algorithm
+
+```
+Sparse graph (few edges per vertex, e.g. road network)?     → Adjacency List
+Dense graph (most vertices connected) or need O(1) lookup?  → Adjacency Matrix
+Need shortest path, unweighted edges?                       → BFS
+Need shortest path, weighted edges, no negatives?           → Dijkstra
+Need to check reachability / explore all paths?             → DFS
+Need to detect a cycle?                                      → DFS + recursion-stack tracker (directed)
+                                                                DFS + parent tracker (undirected)
+Need valid execution order with dependencies?                → Topological Sort (DAG only)
+Need to find isolated sub-networks (islands)?                → BFS/DFS from every unvisited vertex
+```
+
 ---
 
 ## 🎯 Goal
@@ -1609,8 +1972,8 @@ Become a strong **GIS Developer** by mastering:
 3. ✅ Linked Lists 
 4. ✅ Stacks 
 4. ✅ Queues 
-5. 🔥 Trees ← current
-5. ⏳ Graphs
+5. ✅ Trees
+5. 🔥 Graphs ← current
 6. ⏳ Python for GIS + Spatial Databases
 ---
 
